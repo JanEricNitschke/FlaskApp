@@ -1,0 +1,27 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<nav>
+    <h1>Flaskr</h1>
+    <ul>
+        {% if current_user.is_authenticated %}
+        <li><span>{{ current_user.name }}</span>
+            <img src={{ current_user.profile_pic }} alt="Google profile pic"></img></div>
+        <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+            {% else %}
+        <li><a href="{{ url_for('auth.login') }}">Log In</a>
+            {% endif %}
+    </ul>
+</nav>
+<section class="content">
+    <div class="flexbox">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% for message in get_flashed_messages() %}
+        <!-- <div class="flash">{{ message }}</div> -->
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+</section>

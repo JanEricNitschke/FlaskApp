@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Homepage{% endblock %}</h1>
+{% if current_user.is_authenticated %}
+<h2>Hi {{ current_user.name }}, this is your homepage!</h2>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<img src="{{ url_for('static', filename='img/Toni.jpg') }}" , alt="No picture for you ;(" , class="toni">
+{% endif %}
+{% endblock %}

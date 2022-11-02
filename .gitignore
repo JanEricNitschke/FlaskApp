@@ -1,7 +1,13 @@
+*.code-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+.vscode/
+dynamo_testing.py
+*toni*
+*Toni*
 
 # C extensions
 *.so

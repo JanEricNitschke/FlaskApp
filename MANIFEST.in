@@ -1,0 +1,3 @@
+graft FlaskApp/static
+graft FlaskApp/templates
+global-exclude *.pyc
