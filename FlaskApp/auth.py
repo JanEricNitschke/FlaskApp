@@ -1,4 +1,5 @@
 """Defines the authorization functionality"""
+import json
 from flask import (
     Blueprint,
     redirect,
@@ -12,10 +13,6 @@ from flask_login import (
     login_user,
     logout_user,
 )
-
-
-# Python standard libraries
-import json
 
 # Third-party libraries
 import requests

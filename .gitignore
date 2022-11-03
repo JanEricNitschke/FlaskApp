@@ -11,6 +11,8 @@ dynamo_testing.py
 
 # C extensions
 *.so
+*.zip
+*.rar
 
 # Distribution / packaging
 .Python

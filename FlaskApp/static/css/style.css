@@ -84,6 +84,7 @@ nav {
     transition-duration: 0.3s;
     transition-timing-function: ease;
     transition-delay: 0s;
+    cursor: pointer;
 }
 
 .profile {
@@ -202,6 +203,7 @@ nav h1 a {
     justify-content: center;
     align-items: center;
     min-width: 80px;
+    cursor: pointer;
 }
 
 .blue {

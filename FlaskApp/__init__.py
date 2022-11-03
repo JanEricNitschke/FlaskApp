@@ -1,7 +1,7 @@
 """The Application Factory"""
 import os
 
-from flask import Flask, flash
+from flask import Flask
 
 from flask_login import (
     LoginManager,
@@ -9,6 +9,11 @@ from flask_login import (
 import stripe
 
 from oauthlib.oauth2 import WebApplicationClient
+from .user import User
+from . import db
+from . import auth
+from . import homepage
+from . import payment
 
 
 def create_app(test_config=None):
@@ -34,13 +39,6 @@ def create_app(test_config=None):
 
     stripe.api_key = application.config["STRIPE_SECRET"]
 
-    # a simple page that says hello
-    @application.route("/hello")
-    def hello():
-        return "Hellow, World"
-
-    from .user import User
-
     login_manager = LoginManager()
     login_manager.init_app(application)
 
@@ -48,22 +46,17 @@ def create_app(test_config=None):
     def load_user(user_id):
         return User.get(user_id)
 
-    from . import db
-
     db.init_app(application)
-
-    from . import auth
 
     application.register_blueprint(auth.bp)
     login_manager.login_view = "auth.login"
 
-    from . import homepage
-
     application.register_blueprint(homepage.bp)
     application.add_url_rule("/", endpoint="index")
-
-    from . import payment
 
     application.register_blueprint(payment.bp)
 
     return application
+
+
+application = create_app()

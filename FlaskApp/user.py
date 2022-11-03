@@ -1,6 +1,6 @@
 """Handles keeping track of the user"""
 
-from flask_login import UserMixin, login_user
+from flask_login import UserMixin
 from botocore.exceptions import ClientError
 from .db import get_db
 
@@ -63,12 +63,16 @@ class User(UserMixin):
             error = f"User {name} with email {email} is already registered."
 
     @staticmethod
-    def updateDonation(id, amount):
+    def updateDonation(id_, amount):
         """Update user"""
-        db = get_db()
-        user = db.update_item(
-            Key={"userid": id},
-            UpdateExpression="add amount :d set paid = :p",
-            ExpressionAttributeValues={":p": True, ":d": amount},
-            ReturnValues="ALL_NEW",
-        )["Attributes"]
+        try:
+            db = get_db()
+            user = db.update_item(
+                Key={"userid": id_},
+                UpdateExpression="add amount :d set paid = :p",
+                ExpressionAttributeValues={":p": True, ":d": amount},
+                ReturnValues="ALL_NEW",
+            )["Attributes"]
+            return True, user
+        except Exception as e:
+            return False, e
