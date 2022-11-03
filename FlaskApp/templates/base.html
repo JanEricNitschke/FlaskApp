@@ -1,21 +1,31 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<nav>
-    <h1>Flaskr</h1>
-    <ul>
+<html lang="en" class="dark-theme">
+<meta name="description" content="Test app with flask.">
+<!--<base href="/">-->
+<base href=".">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{% block title %}{% endblock %} - FlaskApp</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <nav>
+        <img class="navelement" src="{{ url_for('static', filename='img/icon.png') }}" , alt="No picture for you ;(" ,
+            class="toni">
+        <h1>FlaskApp</h1>
         {% if current_user.is_authenticated %}
-        <li><span>{{ current_user.name }}</span>
-            <img src={{ current_user.profile_pic }} alt="Google profile pic"></img></div>
-        <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-            {% else %}
-        <li><a href="{{ url_for('auth.login') }}">Log In</a>
-            {% endif %}
-    </ul>
-</nav>
-<section class="content">
-    <div class="flexbox">
+        <div class="profilepic">
+            <h1>Log out:</h1>
+            <a href="{{ url_for('auth.logout') }}"><img class="signinbutton navelement profile" src={{
+                    current_user.profile_pic }} alt="Google profile pic"></img>
+            </a>
+        </div>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}"><button class="login signinbutton navelement">Sign in</button></a>
+        {% endif %}
+    </nav>
+    <section class="content">
         <header>
             {% block header %}{% endblock %}
         </header>
@@ -23,5 +33,8 @@
         <!-- <div class="flash">{{ message }}</div> -->
         {% endfor %}
         {% block content %}{% endblock %}
-    </div>
-</section>
+    </section>
+
+    </body>
+
+</html>

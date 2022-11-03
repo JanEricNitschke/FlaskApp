@@ -5,13 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<form method="post">
-    <!-- <button type="submit" , class="googlelogin">
-                <img src="{{ url_for('static', filename='img/btn_google_dark_pressed_ios.svg') }}" , class="googlelogo"
-                    alt="Log in with Google">
-                <b class="googletext">Google</b>
-            </button> -->
-    <input type="image" src="{{ url_for('static', filename='img/btn_google_signin_dark_pressed_web@2x.png') }}"
-        alt="Submit Form" value="Log in with Google">
+<div class="loginbox">
+    <form method="post" , class="loginform">
+        <button type="submit" , class="googlelogin">
+            <!-- <div class="googlelogin"> -->
+            <img src="{{ url_for('static', filename='img/Google__G__Logo.svg') }}" , class="googlelogo"
+                alt="Log in with ">
+            <span class="googletext"> <b class="blue">G</b><b class="red">o</b><b class="yellow">o</b><b
+                    class="blue">g</b><b class="green">l</b><b class="red">e</b></span>
+        </button>
+</div>
 </form>
 {% endblock %}

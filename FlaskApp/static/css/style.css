@@ -19,46 +19,12 @@ body {
 }
 
 .toni {
-    width: auto;
-    height: 60vh;
+    width: 50vw;
+    min-width: 100px;
+    max-width: 500px;
+    height: auto;
 }
 
-.button {
-    background-color: #fff;
-    border-color: #dbdbdb;
-    border-width: 1px;
-    color: #363636;
-    cursor: pointer;
-    justify-content: center;
-    padding-bottom: calc(0.5em - 1px);
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: calc(0.5em - 1px);
-    text-align: center;
-    white-space: nowrap
-}
-
-.googlelogin {
-    font-size: large;
-    height: 2.3em;
-    padding-left: 0.8em;
-    padding-right: 0.8em;
-    margin: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-.googlelogo {
-    width: 30px;
-    margin-right: 10px;
-}
-
-.googletext {
-    font-size: large;
-    height: 2.3em;
-    padding-left: 0.8em;
-    padding-right: 0.8em;
-}
 
 h1 {
     font-family: serif;
@@ -79,7 +45,51 @@ nav {
     background: lightgray;
     display: flex;
     align-items: center;
-    padding: 0 0.5rem;
+    padding: 0.2rem 0.2rem;
+}
+
+.profilepic {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.login {
+    background-color: #3e8ed0;
+    border-color: transparent;
+    color: #fff;
+    border-radius: 12px;
+}
+
+.navelement {
+    height: 2.3em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.signinbutton {
+    font-size: large;
+    transition: all .3s ease;
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+}
+
+.profile {
+    max-height: 80%;
+    border-radius: 50%;
+    margin-left: 0px;
+}
+
+.signinbutton:hover {
+    transform: scale(109%);
+
 }
 
 nav h1 {
@@ -92,22 +102,10 @@ nav h1 a {
     padding: 0.25rem 0.5rem;
 }
 
-nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li a,
-nav ul li span,
-header .action {
-    display: block;
-    padding: 0.5rem;
-}
-
 .content {
     padding: 0 1rem 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .content>header {
@@ -134,40 +132,102 @@ header .action {
 }
 
 
-.content:last-child {
-    margin-bottom: 0;
+
+.button {
+    /* background-color: #fff;
+    border-color: #dbdbdb; */
+    border-width: 3px !important;
+    color: #363636;
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+    text-align: center;
+    white-space: nowrap;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    display: inline-flex;
+    line-height: 1.5;
+    vertical-align: top;
 }
 
-.content form {
-    margin: 1em 0;
+.loginbox {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    width: 100%;
+    min-width: 100px;
 }
 
-.content label {
-    font-weight: bold;
-    margin-bottom: 0.5em;
+.loginform {
+    width: 100% !important;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-.content input,
-.content textarea {
-    margin-bottom: 1em;
+
+
+.googlelogin {
+    /* width: 100% !important;
+    height: 0;
+    padding-bottom: 28.1%;
+    padding-top: 28.1%; */
+    width: 30vw !important;
+    height: 0;
+    padding-bottom: 8.43vw;
+    padding-top: 8.43vw;
+    /* width: 100% !important;
+    height: 100% !important; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-width: 80px;
 }
 
-.content textarea {
-    min-height: 12em;
-    resize: vertical;
+.blue {
+    color: #4285F4
 }
 
-input.danger {
-    color: #cc2f2e;
+.red {
+    color: #DB4437
 }
 
-input[type=submit] {
-    align-self: start;
-    min-width: 10em;
+.yellow {
+    color: #F4B400
+}
+
+.green {
+    color: #0F9D58
+}
+
+.googlelogo {
+    width: 8vw;
+    max-width: 200px;
+    min-width: 20px;
+    padding: 0.1em;
+    margin-right: 0.5em;
+}
+
+.googletext {
+    font-size: 4vw;
+    padding: 0.1em;
 }
 
 * {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+@media all and (max-width: 599px) and (min-width: 50px) {
+    .googletext {
+        font-size: 10px;
+    }
 }
