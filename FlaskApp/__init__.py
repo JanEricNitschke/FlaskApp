@@ -12,37 +12,37 @@ from oauthlib.oauth2 import WebApplicationClient
 
 
 def create_app(test_config=None):
-    """create and configure the app"""
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(SECRET_KEY="dev", DATABASE="flaskapp_userdata")
+    """create and configure the application"""
+    application = Flask(__name__, instance_relative_config=True)
+    application.config.from_mapping(SECRET_KEY="dev", DATABASE="flaskapp_userdata")
 
     if test_config is None:
         # load the instance config if it exists, when not testing
-        app.config.from_pyfile("config.py", silent=True)
+        application.config.from_pyfile("config.py", silent=True)
     else:
         # load the test config if passed in
-        app.config.from_mapping(test_config)
+        application.config.from_mapping(test_config)
 
     # ensure instance folder exists
     try:
-        os.makedirs(app.instance_path)
+        os.makedirs(application.instance_path)
     except OSError:
         pass
 
-    client = WebApplicationClient(app.config["GOOGLE_AUTH_CLIENT_ID"])
-    app.config["client"] = client
+    client = WebApplicationClient(application.config["GOOGLE_AUTH_CLIENT_ID"])
+    application.config["client"] = client
 
-    stripe.api_key = app.config["STRIPE_SECRET"]
+    stripe.api_key = application.config["STRIPE_SECRET"]
 
     # a simple page that says hello
-    @app.route("/hello")
+    @application.route("/hello")
     def hello():
         return "Hellow, World"
 
     from .user import User
 
     login_manager = LoginManager()
-    login_manager.init_app(app)
+    login_manager.init_app(application)
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -50,20 +50,20 @@ def create_app(test_config=None):
 
     from . import db
 
-    db.init_app(app)
+    db.init_app(application)
 
     from . import auth
 
-    app.register_blueprint(auth.bp)
+    application.register_blueprint(auth.bp)
     login_manager.login_view = "auth.login"
 
     from . import homepage
 
-    app.register_blueprint(homepage.bp)
-    app.add_url_rule("/", endpoint="index")
+    application.register_blueprint(homepage.bp)
+    application.add_url_rule("/", endpoint="index")
 
     from . import payment
 
-    app.register_blueprint(payment.bp)
+    application.register_blueprint(payment.bp)
 
-    return app
+    return application
