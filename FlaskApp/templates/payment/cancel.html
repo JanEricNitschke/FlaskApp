@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Cancel{% endblock %}</h1>
+{% if current_user.is_authenticated %}
+<h2>Hi {{ current_user.name }}!</h2>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<p>Forgot to add something to your cart? Shop around then come back to pay!</p>
+{% endif %}
+{% endblock %}

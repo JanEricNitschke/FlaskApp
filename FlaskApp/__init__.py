@@ -1,11 +1,13 @@
 """The Application Factory"""
 import os
 
-from flask import Flask
+from flask import Flask, flash
 
 from flask_login import (
     LoginManager,
 )
+import stripe
+
 from oauthlib.oauth2 import WebApplicationClient
 
 
@@ -29,6 +31,8 @@ def create_app(test_config=None):
 
     client = WebApplicationClient(app.config["GOOGLE_AUTH_CLIENT_ID"])
     app.config["client"] = client
+
+    stripe.api_key = app.config["STRIPE_SECRET"]
 
     # a simple page that says hello
     @app.route("/hello")
@@ -57,5 +61,9 @@ def create_app(test_config=None):
 
     app.register_blueprint(homepage.bp)
     app.add_url_rule("/", endpoint="index")
+
+    from . import payment
+
+    app.register_blueprint(payment.bp)
 
     return app

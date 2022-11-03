@@ -10,11 +10,31 @@
     <title>{% block title %}{% endblock %} - FlaskApp</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://js.stripe.com/v3/"></script> <!-- new -->
+</head>
+
+<body>
     <nav>
-        <img class="navelement" src="{{ url_for('static', filename='img/icon.png') }}" , alt="No picture for you ;(" ,
-            class="toni">
-        <h1>FlaskApp</h1>
+        <div class="navdiv"> <a href="{{ url_for('index') }}"><img class="navelement"
+                    src="{{ url_for('static', filename='img/icon.png') }}" , alt="" , class="toni"></a>
+            <a class="navlink" href="{{ url_for('index') }}">
+                <h1>FlaskApp</h1>
+            </a>
+        </div>
+
         {% if current_user.is_authenticated %}
+        <!-- {% if not current_user.paid %}
+        <div>
+            <form action="{{ url_for('payment.checkout') }}" method="post">
+                <button type="submit" class="login signinbutton navelement">Donate</button>
+            </form>
+        </div>
+        {% endif %} -->
+        <div>
+            <form action="{{ url_for('payment.checkout') }}" method="post">
+                <button type="submit" class="login signinbutton navelement">Donate</button>
+            </form>
+        </div>
         <div class="profilepic">
             <h1>Log out:</h1>
             <a href="{{ url_for('auth.logout') }}"><img class="signinbutton navelement profile" src={{
@@ -22,7 +42,9 @@
             </a>
         </div>
         {% else %}
-        <a href="{{ url_for('auth.login') }}"><button class="login signinbutton navelement">Sign in</button></a>
+        <div class="navdiv">
+            <a href="{{ url_for('auth.login') }}"><button class="login signinbutton navelement">Sign in</button></a>
+        </div>
         {% endif %}
     </nav>
     <section class="content">
@@ -35,6 +57,6 @@
         {% block content %}{% endblock %}
     </section>
 
-    </body>
+</body>
 
 </html>

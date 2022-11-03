@@ -46,6 +46,7 @@ nav {
     display: flex;
     align-items: center;
     padding: 0.2rem 0.2rem;
+    justify-content: space-between;
 }
 
 .profilepic {
@@ -60,6 +61,10 @@ nav {
     border-color: transparent;
     color: #fff;
     border-radius: 12px;
+}
+
+.navlink {
+    text-decoration: none;
 }
 
 .navelement {
@@ -95,6 +100,12 @@ nav {
 nav h1 {
     flex: auto;
     margin: 0;
+}
+
+.navdiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 nav h1 a {

@@ -19,54 +19,9 @@ import json
 
 # Third-party libraries
 import requests
-
-from .db import get_db
 from .user import User
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
-
-# Flask-Login helper to retrieve a user from our db
-
-
-# @bp.route("/register", methods=("GET", "POST"))
-# def register():
-#     """Registration logic"""
-#     if request.method == "POST":
-#         username = request.form["username"]
-#         password = request.form["password"]
-#         db = get_db()
-#         error = None
-
-#         if not username:
-#             error = "Username is required"
-#         elif not password:
-#             error = "Password is required"
-
-#         if error is None:
-#             try:
-#                 db.put_item(
-#                     Item={
-#                         "userid": username,
-#                         "email": "email@test.com",
-#                         "name": "testname",
-#                         "profile_pic": "testpic",
-#                         "paid": False,
-#                         "expires": None,
-#                     },
-#                     ConditionExpression="attribute_not_exists(userid)",
-#                 )
-#             except ClientError as e:
-#                 # Ignore the ConditionalCheckFailedException, bubble up
-#                 # other exceptions.
-#                 if e.response["Error"]["Code"] != "ConditionalCheckFailedException":
-#                     raise
-#                 error = f"User {username} is already registered."
-#             else:
-#                 return redirect(url_for("auth.login"))
-
-#         flash(error)
-
-#     return render_template("auth/register.html")
 
 
 def get_google_provider_cfg():
@@ -146,35 +101,7 @@ def login():
         )
         return redirect(request_uri)
 
-        # username = request.form["username"]
-        # password = request.form["password"]
-        # db = get_db()
-        # error = None
-        # response = db.get_item(Key={"userid": username})
-        # if "Item" not in response:
-        #     error = "Incorrect username."
-        #     response["Item"] = {}
-
-        # user = response["Item"]
-        # if error is None:
-        #     session.clear()
-        #     session["user_id"] = user["userid"]
-        #     return redirect(url_for("index"))
-
-        # flash(error)
-
     return render_template("auth/login.html")
-
-
-# @bp.before_app_request
-# def load_logged_in_user():
-#     """Loads a user that is already logged in"""
-#     user_id = session.get("user_id")
-
-#     if user_id is None:
-#         g.user = None
-#     else:
-#         g.user = get_db().get_item(Key={"userid": user_id})["Item"]
 
 
 @bp.route("/logout")
@@ -182,16 +109,3 @@ def logout():
     """Logs the user out"""
     logout_user()
     return redirect(url_for("index"))
-
-
-# def login_required(view):
-#     """Wraps any function that requires a logged in user. If there is none it redirects to the login page"""
-
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user is None:
-#             return redirect(url_for("auth.login"))
-
-#         return view(**kwargs)
-
-#     return wrapped_view

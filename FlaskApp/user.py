@@ -1,6 +1,6 @@
 """Handles keeping track of the user"""
 
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user
 from botocore.exceptions import ClientError
 from .db import get_db
 
@@ -8,13 +8,16 @@ from .db import get_db
 class User(UserMixin):
     """Class that stores userinformation"""
 
-    def __init__(self, id_, name, email, profile_pic, paid=False, expires=None):
+    def __init__(
+        self, id_, name, email, profile_pic, paid=False, expires=None, amount=0
+    ):
         self.id = id_
         self.name = name
         self.email = email
         self.profile_pic = profile_pic
         self.paid = paid
         self.expires = expires
+        self.amount = amount
 
     @staticmethod
     def get(user_id):
@@ -31,11 +34,12 @@ class User(UserMixin):
             profile_pic=item["profile_pic"],
             paid=item["paid"],
             expires=item["expires"],
+            amount=item["amount"],
         )
         return user
 
     @staticmethod
-    def create(id_, name, email, profile_pic, paid=False, expires=None):
+    def create(id_, name, email, profile_pic, paid=False, expires=None, amount=0):
         """Create new user"""
         db = get_db()
         try:
@@ -47,6 +51,7 @@ class User(UserMixin):
                     "profile_pic": profile_pic,
                     "paid": paid,
                     "expires": expires,
+                    "amount": amount,
                 },
                 ConditionExpression="attribute_not_exists(userid)",
             )
@@ -56,3 +61,14 @@ class User(UserMixin):
             if e.response["Error"]["Code"] != "ConditionalCheckFailedException":
                 raise
             error = f"User {name} with email {email} is already registered."
+
+    @staticmethod
+    def updateDonation(id, amount):
+        """Update user"""
+        db = get_db()
+        user = db.update_item(
+            Key={"userid": id},
+            UpdateExpression="add amount :d set paid = :p",
+            ExpressionAttributeValues={":p": True, ":d": amount},
+            ReturnValues="ALL_NEW",
+        )["Attributes"]
