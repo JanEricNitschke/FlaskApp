@@ -59,7 +59,6 @@ def webhook():
     event = None
     payload = request.data
     sig_header = request.headers["STRIPE_SIGNATURE"]
-
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, current_app.config["STRIPE_WH_SECRET"]
@@ -73,15 +72,14 @@ def webhook():
 
     # Handle the event
     if event["type"] == "checkout.session.completed":
-        print(event, flush=True)
         session = event["data"]["object"]
         status, response = User.updateDonation(
             session["client_reference_id"], session["amount_total"]
         )
         if not status:
-            print(response)
+
             return response, 500
         return response, 200
 
-    print(f"Unhandled event type {event['type']}")
+    print(f"Unhandled event type {event['type']}", flush=True)
     return jsonify(success=True)

@@ -1,13 +1,10 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #232F3E;
-    padding: 1rem;
 }
 
 body {
-    max-width: 960px;
     margin: 0 auto;
-    background: white;
+    background: #232F3E;
 }
 
 .flexbox {
@@ -18,23 +15,26 @@ body {
     width: 70vw;
 }
 
-.toni {
-    width: 50vw;
-    min-width: 100px;
-    max-width: 500px;
-    height: auto;
+.homepagepic {
+    width: 100vw;
 }
-
 
 h1 {
     font-family: serif;
     color: #377ba8;
     margin: 1rem 0;
+    font-size: 32px;
 }
 
-a {
-    color: #377ba8;
+h2 {
+    color: #fff
 }
+
+.sitelogo {}
+
+/* a {
+    color: #377ba8;
+} */
 
 hr {
     border: none;
@@ -63,6 +63,13 @@ nav {
     border-radius: 12px;
 }
 
+.donate {
+    background-color: #403ed0;
+    border-color: transparent;
+    color: #fff;
+    border-radius: 12px;
+}
+
 .navlink {
     text-decoration: none;
 }
@@ -71,13 +78,10 @@ nav {
     height: 2.3em;
     padding-left: 0.8em;
     padding-right: 0.8em;
-    margin-top: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
+    margin: 0.4em;
 }
 
-.signinbutton {
+.animatedbutton {
     font-size: large;
     transition: all .3s ease;
     transition-property: all;
@@ -93,10 +97,11 @@ nav {
     margin-left: 0px;
 }
 
-.signinbutton:hover {
+.animatedbutton:hover {
     transform: scale(109%);
 
 }
+
 
 nav h1 {
     flex: auto;
@@ -124,17 +129,15 @@ nav h1 a {
     border-bottom: 1px solid lightgray;
     display: flex;
     align-items: flex-end;
+    margin-bottom: 12px;
 }
 
 .content>header h1 {
     flex: auto;
     margin: 1rem 0 0.25rem 0;
+    color: #FF9900
 }
 
-.content>header h2 {
-    flex: auto;
-    margin: 1rem 0 0.25rem 0;
-}
 
 .flash {
     margin: 1em 0;
@@ -146,8 +149,6 @@ nav h1 a {
 
 
 .button {
-    /* background-color: #fff;
-    border-color: #dbdbdb; */
     border-width: 3px !important;
     color: #363636;
     cursor: pointer;
@@ -178,32 +179,34 @@ nav h1 a {
 
 .loginform {
     width: 100% !important;
-    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-
-
 .googlelogin {
-    /* width: 100% !important;
+    width: max(min(30vw, 3000px), 300px) !important;
     height: 0;
-    padding-bottom: 28.1%;
-    padding-top: 28.1%; */
-    width: 30vw !important;
-    height: 0;
-    padding-bottom: 8.43vw;
-    padding-top: 8.43vw;
-    /* width: 100% !important;
-    height: 100% !important; */
+    padding-bottom: max(min(8.43vw, 843.0px), 84.3px);
+    padding-top: max(min(8.43vw, 843.0px), 84.3px);
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    min-width: 80px;
+    ;
     cursor: pointer;
+}
+
+.googlelogo {
+    width: max(min(8vw, 800px), 80px);
+    padding: 0.1em;
+    margin-right: max(min(1vw, 100), 10px);
+}
+
+.googletext {
+    font-size: max(min(4vw, 400px), 40px);
+    padding: 0.1em;
 }
 
 .blue {
@@ -222,25 +225,32 @@ nav h1 a {
     color: #0F9D58
 }
 
-.googlelogo {
-    width: 8vw;
-    max-width: 200px;
-    min-width: 20px;
-    padding: 0.1em;
-    margin-right: 0.5em;
-}
 
-.googletext {
-    font-size: 4vw;
-    padding: 0.1em;
-}
 
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
 
 @media all and (max-width: 599px) and (min-width: 50px) {
-    .googletext {
-        font-size: 10px;
+    nav h1 {
+        font-size: 16px;
     }
+
+    .navtext {
+        font-size: 16px;
+    }
+
+    .sitelogo {}
+
+    .navelement {
+        height: 2.3em;
+        padding-left: 0.4em;
+        padding-right: 0.4em;
+        margin: 0.2em;
+    }
+
+    .content>h2 {
+        font-size: 15px;
+    }
+
 }

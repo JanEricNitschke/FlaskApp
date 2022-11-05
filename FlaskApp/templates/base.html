@@ -1,22 +1,21 @@
 <!doctype html>
 <html lang="en" class="dark-theme">
 <meta name="description" content="Test app with flask.">
-<!--<base href="/">-->
 <base href=".">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>{% block title %}{% endblock %} - FlaskApp</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://js.stripe.com/v3/"></script> <!-- new -->
+    <!-- <script src="https://js.stripe.com/v3/"></script> -->
 </head>
 
 <body>
     <nav>
-        <div class="navdiv"> <a href="{{ url_for('index') }}"><img class="navelement"
-                    src="{{ url_for('static', filename='img/icon.png') }}" , alt="" , class="toni"></a>
+        <div class="navdiv"> <a href="{{ url_for('index') }}"><img class="navelement sitelogo"
+                    src="{{ url_for('static', filename='img/icon.png') }}" , alt=""></a>
             <a class="navlink" href="{{ url_for('index') }}">
                 <h1>FlaskApp</h1>
             </a>
@@ -30,20 +29,22 @@
             </form>
         </div>
         {% endif %} -->
-        <div>
+        <div class="navdiv">
             <form action="{{ url_for('payment.checkout') }}" method="post">
-                <button type="submit" class="login signinbutton navelement">Donate</button>
+                <button type="submit" class="donate animatedbutton navtext navelement">Donate</button>
             </form>
         </div>
-        <div class="profilepic">
-            <h1>Log out:</h1>
-            <a href="{{ url_for('auth.logout') }}"><img class="signinbutton navelement profile" src={{
-                    current_user.profile_pic }} alt="Google profile pic"></img>
-            </a>
+        <div class="navdiv">
+            <a href="{{ url_for('auth.logout') }}"><button class="login animatedbutton navtext navelement">Log
+                    out</button></a>
+        </div>
+        <!-- <img class="animatedbutton navelement profile" src={{
+                    current_user.profile_pic }} alt="Google profile pic"></img> -->
         </div>
         {% else %}
         <div class="navdiv">
-            <a href="{{ url_for('auth.login') }}"><button class="login signinbutton navelement">Sign in</button></a>
+            <a href="{{ url_for('auth.login') }}"><button class="login animatedbutton navtext navelement">Sign
+                    in</button></a>
         </div>
         {% endif %}
     </nav>
@@ -51,12 +52,11 @@
         <header>
             {% block header %}{% endblock %}
         </header>
-        {% for message in get_flashed_messages() %}
+        <!-- {% for message in get_flashed_messages() %} -->
         <!-- <div class="flash">{{ message }}</div> -->
-        {% endfor %}
+        <!-- {% endfor %} -->
         {% block content %}{% endblock %}
     </section>
-
 </body>
 
 </html>

@@ -2,14 +2,12 @@
 
 {% block header %}
 <h1>{% block title %}Homepage{% endblock %}</h1>
-{% if current_user.is_authenticated %}
-<h2>Hi {{ current_user.name }}, this is your homepage!</h2>
-{% endif %}
 {% endblock %}
 
 {% block content %}
 {% if current_user.is_authenticated %}
+<h2>Hi {{ current_user.name }}, this is your homepage!</h2>
 <img src="{{ url_for('static', filename='img/DALL·E 2022-11-03 15.40.57 - a stern-looking owl dressed as a librarian, digital art.png') }}"
-    , alt="No picture for you ;(" , class="toni">
+    , alt="No picture for you ;(" , class="homepagepic">
 {% endif %}
 {% endblock %}
