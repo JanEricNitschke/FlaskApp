@@ -9,7 +9,17 @@ class User(UserMixin):
     """Class that stores userinformation"""
 
     def __init__(
-        self, id_, name, email, profile_pic, paid=False, expires=None, amount=0
+        self,
+        id_,
+        name,
+        email,
+        profile_pic,
+        paid=False,
+        expires=None,
+        amount=0,
+        family_name=None,
+        gender=None,
+        locale=None,
     ):
         self.id = id_
         self.name = name
@@ -18,6 +28,9 @@ class User(UserMixin):
         self.paid = paid
         self.expires = expires
         self.amount = amount
+        self.family_name = family_name
+        self.gender = gender
+        self.locale = locale
 
     @staticmethod
     def get(user_id):
@@ -35,11 +48,25 @@ class User(UserMixin):
             paid=item["paid"],
             expires=item["expires"],
             amount=item["amount"],
+            family_name=item["family_name"],
+            gender=item["gender"],
+            locale=item["locale"],
         )
         return user
 
     @staticmethod
-    def create(id_, name, email, profile_pic, paid=False, expires=None, amount=0):
+    def create(
+        id_,
+        name,
+        email,
+        profile_pic,
+        paid=False,
+        expires=None,
+        amount=0,
+        family_name=None,
+        gender=None,
+        locale=None,
+    ):
         """Create new user"""
         db = get_db()
         try:
@@ -52,6 +79,9 @@ class User(UserMixin):
                     "paid": paid,
                     "expires": expires,
                     "amount": amount,
+                    "family_name": family_name,
+                    "gender": gender,
+                    "locale": locale,
                 },
                 ConditionExpression="attribute_not_exists(userid)",
             )
