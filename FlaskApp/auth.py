@@ -34,10 +34,11 @@ def callback():
     code = request.args.get("code")
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
+    request.url = request.url.replace("http://", "https://", 1)
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
-        redirect_url=request.base_url,
+        redirect_url=url_for("auth.callback", _external=True, _scheme="https"),
         code=code,
     )
     token_response = requests.post(
@@ -118,7 +119,7 @@ def login():
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
             authorization_endpoint,
-            redirect_uri=request.base_url + "/callback",
+            redirect_uri=url_for("auth.callback", _external=True, _scheme="https"),
             scope=["openid", "email", "profile"],
         )
         return redirect(request_uri)

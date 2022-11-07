@@ -1,6 +1,5 @@
 """The Application Factory"""
 import os
-
 from flask import Flask
 
 from flask_login import (
@@ -20,7 +19,7 @@ def create_app(test_config=None):
     """create and configure the application"""
     application = Flask(__name__, instance_relative_config=True)
     application.config.from_mapping(SECRET_KEY="dev", DATABASE="flaskapp_userdata")
-
+    os.environ["wsgi.url_scheme"] = "https"
     if test_config is None:
         # load the instance config if it exists, when not testing
         application.config.from_pyfile("config.py", silent=True)
