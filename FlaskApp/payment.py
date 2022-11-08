@@ -31,8 +31,8 @@ def checkout():
         ],
         mode="payment",
         submit_type="donate",
-        success_url=request.host_url + url_for("payment.success"),
-        cancel_url=request.host_url + url_for("payment.cancel"),
+        success_url=url_for("payment.success", _external=True, _scheme="https"),
+        cancel_url=url_for("payment.cancel", _external=True, _scheme="https"),
         client_reference_id=current_user.id,
     )
 
@@ -77,7 +77,6 @@ def webhook():
             session["client_reference_id"], session["amount_total"]
         )
         if not status:
-
             return response, 500
         return response, 200
 
