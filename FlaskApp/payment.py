@@ -25,7 +25,7 @@ def checkout():
         line_items=[
             {
                 # Provide the exact Price ID (for example, pr_1234) of the product you want to sell,
-                "price": "price_1M00WXArSIx0pb8xSYDLF394",
+                "price": current_app.config["PRODUCT_ID"],
                 "quantity": 1,
             },
         ],
