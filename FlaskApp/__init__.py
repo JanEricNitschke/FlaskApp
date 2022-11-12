@@ -14,6 +14,14 @@ from . import auth
 from . import homepage
 from . import payment
 
+login_manager = LoginManager()
+
+
+@login_manager.user_loader
+def load_user(user_id: str):
+    """Defines user_loader"""
+    return User.get(user_id)
+
 
 def create_app(test_config=None):
     """create and configure the application"""
@@ -38,12 +46,7 @@ def create_app(test_config=None):
 
     stripe.api_key = application.config["STRIPE_SECRET"]
 
-    login_manager = LoginManager()
     login_manager.init_app(application)
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.get(user_id)
 
     db.init_app(application)
 

@@ -22,6 +22,7 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 def get_google_provider_cfg():
+    """Get google provider config"""
     return requests.get(
         current_app.config["GOOGLE_AUTH_DISCOVERY_URL"], timeout=100
     ).json()
@@ -29,6 +30,7 @@ def get_google_provider_cfg():
 
 @bp.route("/login/callback")
 def callback():
+    """Login callback for google oauth to call"""
     client = current_app.config["client"]
     # Get authorization code Google sent back to you
     code = request.args.get("code")
@@ -107,8 +109,6 @@ def callback():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     """Login logic"""
-    # OAuth 2 client setup
-
     if request.method == "POST":
         # Find out what URL to hit for Google login
         client = current_app.config["client"]

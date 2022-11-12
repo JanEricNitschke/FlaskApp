@@ -6,7 +6,7 @@ from FlaskApp import create_app
 from FlaskApp.db import get_db, init_db
 
 
-@pytest.fixture
+@pytest.fixture(scope="session", autouse=True)
 def app():
     """Fixture for initializing the app"""
     app = create_app(
@@ -18,6 +18,11 @@ def app():
             "AWS_DEFAULT_REGION": "eu-central-1",
             "GOOGLE_AUTH_CLIENT_ID": "ABCDEFG",
             "STRIPE_SECRET": "HIJKLMN",
+            "GOOGLE_AUTH_DISCOVERY_URL": (
+                "https://accounts.google.com/.well-known/openid-configuration"
+            ),
+            "PRODUCT_ID": "",
+            "STRIPE_WH_SECRET": "",
         }
     )
 
@@ -55,25 +60,3 @@ def client(app):
 def runner(app):
     """Fixture to be able to issue cli runner commands"""
     return app.test_cli_runner()
-
-
-# will have to check how to adapt this to my oauth2 setup
-class AuthActions:
-    """Define login and logout function to be able to easily call them"""
-
-    def __init__(self, client):
-        self._client = client
-
-    def login(self, username="test", password="test"):
-        return self._client.post(
-            "/auth/login", data={"username": username, "password": password}
-        )
-
-    def logout(self):
-        return self._client.get("/auth/logout")
-
-
-@pytest.fixture
-def auth(client):
-    """Fixture for calling the login, logout functions"""
-    return AuthActions(client)

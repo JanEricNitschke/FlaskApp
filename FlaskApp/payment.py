@@ -73,7 +73,7 @@ def webhook():
     # Handle the event
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-        status, response = User.updateDonation(
+        status, response = User.update_donation(
             session["client_reference_id"], session["amount_total"]
         )
         if not status:
