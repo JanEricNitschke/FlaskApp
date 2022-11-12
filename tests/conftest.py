@@ -23,7 +23,8 @@ def app():
 
     with app.app_context():
         init_db()
-        get_db().put_item(
+        table = get_db()
+        table.put_item(
             Item={
                 "userid": "1",
                 "email": "test@test.com",
@@ -40,9 +41,8 @@ def app():
         )
 
     yield app
-
-    get_db().delete_item(Key={"userid": "1"})
     # remove the above entries from the db
+    table.delete_item(Key={"userid": "1"})
 
 
 @pytest.fixture
