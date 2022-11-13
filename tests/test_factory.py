@@ -1,7 +1,20 @@
 """Test factory"""
 
 import os
-from FlaskApp import create_app
+from unittest.mock import patch
+from FlaskApp import create_app, load_user
+
+
+@patch("FlaskApp.user.User.get")
+def test_load_user(get_mock):
+    """Tests load user"""
+    get_mock.return_value = None
+    user_id = "1"
+    load_user(user_id)
+    get_mock.assert_called_with(user_id)
+    user_id = "ABCYW"
+    load_user(user_id)
+    get_mock.assert_called_with(user_id)
 
 
 def test_config():

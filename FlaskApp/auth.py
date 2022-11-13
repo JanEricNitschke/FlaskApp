@@ -53,26 +53,26 @@ def callback():
         ),
         timeout=100,
     )
-
     # Parse the tokens!
     client.parse_request_body_response(json.dumps(token_response.json()))
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body, timeout=100)
-    if userinfo_response.json().get("email_verified"):
-        unique_id = userinfo_response.json()["sub"]
-        users_email = userinfo_response.json()["email"]
-        picture = userinfo_response.json()["picture"]
-        users_name = userinfo_response.json()["given_name"]
+    userinfo_json = userinfo_response.json()
+    if userinfo_json.get("email_verified"):
+        unique_id = userinfo_json["sub"]
+        users_email = userinfo_json["email"]
+        picture = userinfo_json["picture"]
+        users_name = userinfo_json["given_name"]
         family_name = None
         gender = None
         locale = None
-        if "family_name" in userinfo_response.json():
-            family_name = userinfo_response.json()["family_name"]
-        if "gender" in userinfo_response.json():
-            gender = userinfo_response.json()["gender"]
-        if "locale" in userinfo_response.json():
-            locale = userinfo_response.json()["locale"]
+        if "family_name" in userinfo_json:
+            family_name = userinfo_json["family_name"]
+        if "gender" in userinfo_json:
+            gender = userinfo_json["gender"]
+        if "locale" in userinfo_json:
+            locale = userinfo_json["locale"]
     else:
         return "User email not available or not verified by Google.", 400
     # Create a user in your db with the information provided

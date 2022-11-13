@@ -17,6 +17,7 @@ def app():
             "AWS_SECRET_ACCESS_KEY": os.environ["AWS_TESTDB_SECRET_ACCESS_KEY"],
             "AWS_DEFAULT_REGION": "eu-central-1",
             "GOOGLE_AUTH_CLIENT_ID": "ABCDEFG",
+            "GOOGLE_AUTH_CLIENT_SECRET": "OPQRSTUV",
             "STRIPE_SECRET": "HIJKLMN",
             "GOOGLE_AUTH_DISCOVERY_URL": (
                 "https://accounts.google.com/.well-known/openid-configuration"

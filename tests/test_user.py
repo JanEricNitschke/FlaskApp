@@ -40,8 +40,8 @@ def test_create(app):
         table.delete_item(Key={"userid": "2"})
 
 
-def test_updateDonation(app):
-    """Tests User.updateDonation()"""
+def test_update_donation(app):
+    """Tests User.update_donation()"""
     with app.app_context():
         success, user = User.update_donation("1", 1000)
         assert success is True

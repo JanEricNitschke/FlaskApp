@@ -22,4 +22,4 @@ def test_homepage(client, app):
         assert response.status_code == 302
         assert response.headers["Location"] == "/auth/login?next=%2F"
         login_user(user)
-        assert client.get("/payment/success").status_code == 200
+        assert client.get("/").status_code == 200
