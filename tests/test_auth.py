@@ -1,12 +1,10 @@
 """Tests auth module"""
 
 from unittest.mock import MagicMock, patch
-from flask import jsonify, make_response
 from flask_login import (
     login_user,
     current_user,
 )
-from requests.models import Response
 from FlaskApp.user import User
 from FlaskApp.auth import get_google_provider_cfg
 

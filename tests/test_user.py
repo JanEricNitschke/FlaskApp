@@ -3,8 +3,6 @@
 from FlaskApp.user import User
 from FlaskApp.db import get_db
 
-# will probably be a lot of DB testing
-
 
 def test_get(app):
     """Test User.get()"""
