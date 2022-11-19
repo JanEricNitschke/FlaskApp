@@ -1,5 +1,6 @@
 """Tests auth module"""
 
+import json
 from unittest.mock import MagicMock, patch
 from flask_login import (
     login_user,
@@ -55,7 +56,6 @@ def test_get_google_provider_cfg(get_mock, app):
 
 @patch("FlaskApp.auth.get_google_provider_cfg")
 @patch("FlaskApp.auth.login_user")
-@patch("FlaskApp.user.User.create")
 @patch("FlaskApp.user.User.get")
 @patch("FlaskApp.auth.requests.post")
 @patch("FlaskApp.auth.requests.get")
@@ -63,7 +63,6 @@ def test_callback(
     get_mock,
     post_mock,
     user_get_mock,
-    user_create_mock,
     login_mock,
     mock_google_prov,
     app,
@@ -117,7 +116,6 @@ def test_callback(
     assert mock_google_prov.call_count == 1
     assert post_mock.call_count == 1
     assert not user_get_mock.called
-    assert not user_create_mock.called
     assert not login_mock.called
     assert response.status_code == 400
 
@@ -128,10 +126,9 @@ def test_callback(
     assert mock_google_prov.call_count == 2
     assert post_mock.call_count == 2
     assert user_get_mock.called
-    assert user_create_mock.called
-    assert login_mock.called
+    assert not login_mock.called
     assert response.status_code == 302
-    assert response.headers["Location"] == "/"
+    assert response.headers["Location"] == "/auth/registration"
 
     response = client.get("auth/login/callback", query_string={"code": ""})
     assert webappclient.prepare_token_request.call_count == 3
@@ -140,7 +137,58 @@ def test_callback(
     assert mock_google_prov.call_count == 3
     assert post_mock.call_count == 3
     assert user_get_mock.call_count == 2
-    assert user_create_mock.call_count == 1
-    assert login_mock.call_count == 2
+    assert login_mock.call_count == 1
     assert response.status_code == 302
     assert response.headers["Location"] == "/"
+
+
+def test_cancel(client):
+    """Tests cancel"""
+    assert client.get("/auth/cancel").status_code == 200
+
+
+@patch("FlaskApp.auth.login_user")
+def test_registration(login_mock, client):
+    """Tests registration"""
+    assert client.get("/auth/registration").status_code == 200
+    response = client.post("/auth/registration")
+    assert response.status_code == 408
+    unverified_false = {
+        "email_verified": False,
+        "sub": "2",
+        "email": "test@test.com",
+        "picture": "test.png",
+        "given_name": "Test",
+    }
+    unverified_missing = {
+        "sub": "2",
+        "email": "test@test.com",
+        "picture": "test.png",
+        "given_name": "Test",
+    }
+    client.set_cookie("localhost", "user_info", json.dumps(unverified_false))
+    response = client.post("/auth/registration")
+    assert response.status_code == 400
+    client.set_cookie("localhost", "user_info", json.dumps(unverified_missing))
+    response = client.post("/auth/registration")
+    assert response.status_code == 400
+    assert not login_mock.called
+    verified = {
+        "email_verified": True,
+        "sub": "1",
+        "email": "test@test.com",
+        "picture": "test.png",
+        "given_name": "Test",
+        "family_name": "Test",
+        "gender": "male",
+        "locale": "en",
+    }
+    client.set_cookie("localhost", "user_info", json.dumps(verified))
+    response = client.post("/auth/registration")
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/"
+    assert login_mock.called
+    assert "Set-Cookie" in response.headers
+    assert "user_info=;" in response.headers["Set-Cookie"]
+    assert "Expires=Thu, 01 Jan 1970 00:00:00 GMT" in response.headers["Set-Cookie"]
+    assert "Max-Age=0" in response.headers["Set-Cookie"]

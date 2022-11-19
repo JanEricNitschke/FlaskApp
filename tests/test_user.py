@@ -32,7 +32,7 @@ def test_create(app):
             "test2.png",
         )
         assert response is not None
-        assert isinstance(response, dict)
+        assert isinstance(response, User)
         table = get_db()
         assert "Item" in table.get_item(Key={"userid": "2"})
         table.delete_item(Key={"userid": "2"})

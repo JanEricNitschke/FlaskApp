@@ -1,4 +1,4 @@
-"""Tests payment module"""
+"""Tests homepage module"""
 
 from flask_login import (
     login_user,

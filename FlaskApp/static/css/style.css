@@ -1,10 +1,18 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
 }
 
 body {
     margin: 0 auto;
     background: #232F3E;
+    height: 100%;
+}
+
+.body_wrapper {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .flexbox {
@@ -16,7 +24,7 @@ body {
 }
 
 .homepagepic {
-    width: 100vw;
+    width: 90vw;
 }
 
 h1 {
@@ -123,6 +131,7 @@ nav h1 a {
     padding: 0 1rem 1rem;
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .content>header {
@@ -225,6 +234,93 @@ nav h1 a {
     color: #0F9D58
 }
 
+.content>h2,
+p,
+li {
+    color: #fff
+}
+
+
+.cookie-consent-container {
+    background: #444;
+    color: #fff;
+    padding: 6px;
+    font-size: 13px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.cookie-consent-container button {
+    text-decoration: none;
+    background: #222;
+    color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+    padding: 4px 7px;
+    margin: 2px 0;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.07s, color 0.07s, border-color 0.07s;
+}
+
+.cookie-consent-container button:hover {
+    background: #fff;
+    color: #222;
+}
+
+.reg {
+    border: 3px solid #f1f1f1;
+    width: max(40vw, 300px);
+}
+
+.reg_input[type=text],
+.reg_input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.reg_button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Add a hover effect for buttons */
+.reg_button:hover {
+    opacity: 0.8;
+}
+
+.reg_label {
+    color: #FF9900;
+}
+
+
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Add padding to containers */
+.reg_container {
+    padding: 16px;
+}
+
+.cancel_link {
+    color: inherit;
+    text-decoration: inherit;
+}
 
 
 * {

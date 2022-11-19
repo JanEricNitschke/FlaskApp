@@ -2,7 +2,6 @@
 
 from flask import Blueprint, render_template
 
-# from FlaskApp.auth import login_required
 from flask_login import login_required
 
 bp = Blueprint("homepage", __name__)

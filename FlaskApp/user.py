@@ -70,6 +70,15 @@ class User(UserMixin):
         locale: Optional[str] = None,
     ) -> Optional[dict]:
         """Create new user"""
+        user = User(
+            id_=id_,
+            name=name,
+            email=email,
+            profile_pic=profile_pic,
+            family_name=family_name,
+            gender=gender,
+            locale=locale,
+        )
         db = get_db()
         try:
             response = db.put_item(
@@ -87,7 +96,7 @@ class User(UserMixin):
                 },
                 ConditionExpression="attribute_not_exists(userid)",
             )
-            return response
+            return user
         except ClientError as e:
             # Ignore the ConditionalCheckFailedException, bubble up
             # other exceptions.

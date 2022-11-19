@@ -9,54 +9,91 @@
     <title>{% block title %}{% endblock %} - FlaskApp</title>
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/deeppurple-amber.css') }}"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- <script src="https://js.stripe.com/v3/"></script> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cookieconsent.min.css') }}" />
 </head>
 
 <body>
-    <nav>
-        <div class="navdiv"> <a href="{{ url_for('index') }}"><img class="navelement sitelogo"
-                    src="{{ url_for('static', filename='img/icon.png') }}" , alt=""></a>
-            <a class="navlink" href="{{ url_for('index') }}">
-                <h1>FlaskApp</h1>
-            </a>
-        </div>
+    <div class="body_wrapper">
+        <!-- Upper navbar that is there on every page -->
+        <nav class="header">
+            <div class="navdiv">
+                <a class="navlink" href="{{ url_for('index') }}">
+                    <h1>FlaskApp</h1>
+                </a>
+            </div>
 
-        {% if current_user.is_authenticated %}
-        <!-- {% if not current_user.paid %}
-        <div>
-            <form action="{{ url_for('payment.checkout') }}" method="post">
-                <button type="submit" class="login signinbutton navelement">Donate</button>
-            </form>
-        </div>
-        {% endif %} -->
-        <div class="navdiv">
-            <form action="{{ url_for('payment.checkout') }}" method="post">
-                <button type="submit" class="donate animatedbutton navtext navelement">Donate</button>
-            </form>
-        </div>
-        <div class="navdiv">
-            <a href="{{ url_for('auth.logout') }}"><button class="login animatedbutton navtext navelement">Log
-                    out</button></a>
-        </div>
-        <!-- <img class="animatedbutton navelement profile" src={{
-                    current_user.profile_pic }} alt="Google profile pic"></img> -->
-        </div>
-        {% else %}
-        <div class="navdiv">
-            <a href="{{ url_for('auth.login') }}"><button class="login animatedbutton navtext navelement">Sign
-                    in</button></a>
-        </div>
-        {% endif %}
-    </nav>
-    <section class="content">
-        <header>
-            {% block header %}{% endblock %}
-        </header>
-        <!-- {% for message in get_flashed_messages() %} -->
-        <!-- <div class="flash">{{ message }}</div> -->
-        <!-- {% endfor %} -->
-        {% block content %}{% endblock %}
-    </section>
+            {% if current_user.is_authenticated %}
+            <div class="navdiv">
+                <form action="{{ url_for('payment.checkout') }}" method="post">
+                    <button type="submit" class="donate animatedbutton navtext navelement">Donate</button>
+                </form>
+            </div>
+            <div class="navdiv">
+                <a href="{{ url_for('auth.logout') }}"><button class="login animatedbutton navtext navelement">Log
+                        out</button></a>
+            </div>
+            {% else %}
+            <div class="navdiv">
+                <a href="{{ url_for('auth.login') }}"><button class="login animatedbutton navtext navelement">Sign
+                        in</button></a>
+            </div>
+            {% endif %}
+        </nav>
+
+        <!-- Page content with header and actual content -->
+        <section class="content">
+            <header>
+                {% block header %}{% endblock %}
+            </header>
+            {% block content %}{% endblock %}
+        </section>
+
+        <!-- Footer navbar to impressum, privacy policy etc. Also there on every page -->
+        <footer>
+            <nav class="footer">
+                <div class="navdiv">
+                    <a class="navlink" href="{{ url_for('legal.impressum') }}">
+                        <h1>Impressum</h1>
+                    </a>
+                </div>
+                <div class="navdiv">
+                    <a class="navlink" href="{{ url_for('legal.privacy') }}">
+                        <h1>Privacy Policy</h1>
+                    </a>
+                </div>
+                <div class="navdiv">
+                    <a class="navlink" href="{{ url_for('legal.tos') }}">
+                        <h1>Terms of Service</h1>
+                    </a>
+                </div>
+            </nav>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/cookieconsent.min.js') }}" data-cfasync="false"></script>
+    <script>
+        window.cookieconsent.initialise({
+            "palette": {
+                "popup": {
+                    "background": "#461506",
+                    "text": "#ff9900",
+                    "link": "#ffffff"
+                },
+                "button": {
+                    "background": "#461506",
+                    "text": "#ff9900"
+                }
+            },
+            "theme": "edgeless",
+            "type": "info",
+            "content": {
+                "message": "This website uses cookies to store your session information.",
+                "link": "Learn more",
+                "href": "https://cookiesandyou.com",
+                "policy": "Cookie Policy"
+            }
+        });
+    </script>
+
 </body>
 
 </html>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Registration{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="loginbox">
+    <form class="reg" method="post">
+        <div class="reg_container">
+            <label class="reg_label">
+                <input type="checkbox" class="reg_input" name="agree" required>I agree to this site's <a class="navlink"
+                    href="{{ url_for('legal.privacy') }}">
+                    Privacy Policy
+                </a> and to it storing my personal information
+            </label>
+            <button type="submit" class="reg_button">Agree and register</button>
+        </div>
+
+        <div class="reg_container" style="background-color:#f1f1f1">
+            <button type="button" class="reg_button cancelbtn"><a class="cancel_link"
+                    href="{{ url_for('auth.cancel') }}">
+                    Cancel
+                </a></button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

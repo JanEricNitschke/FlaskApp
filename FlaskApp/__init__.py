@@ -3,9 +3,7 @@
 import os
 from typing import Optional
 from flask import Flask
-from flask_login import (
-    LoginManager,
-)
+from flask_login import LoginManager
 import stripe
 
 from oauthlib.oauth2 import WebApplicationClient
@@ -14,6 +12,7 @@ from . import db
 from . import auth
 from . import homepage
 from . import payment
+from . import legal
 
 login_manager = LoginManager()
 
@@ -58,6 +57,8 @@ def create_app(test_config=None):
     application.add_url_rule("/", endpoint="index")
 
     application.register_blueprint(payment.bp)
+
+    application.register_blueprint(legal.bp)
 
     return application
 
