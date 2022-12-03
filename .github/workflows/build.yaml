@@ -1,4 +1,4 @@
-# This workflow will run the tests on the CSGOML repo
+# This workflow will run the tests on the FlaskApp repo
 
 name: build
 
