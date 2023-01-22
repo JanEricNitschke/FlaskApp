@@ -86,10 +86,13 @@ def registration():
     if request.method == "POST":
         # Find out what URL to hit for Google login
         user_info = request.cookies.get("user_info")
-        try:
-            userinfo_json = json.loads(user_info)
-        except TypeError:
+        if user_info is None:
             return "Could not get user information for registration", 408
+        else:
+            try:
+                userinfo_json = json.loads(user_info)
+            except TypeError:
+                return "Could not get user information for registration", 408
         if userinfo_json.get("email_verified"):
             unique_id = userinfo_json.get("sub")
             users_email = userinfo_json.get("email")

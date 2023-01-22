@@ -35,7 +35,7 @@ class User(UserMixin):
         self.locale = locale
 
     @staticmethod
-    def get(user_id: str) -> User:
+    def get(user_id: str) -> Optional[User]:
         """Grab existing user"""
         db = get_db()
         response = db.get_item(Key={"userid": user_id})
@@ -68,7 +68,7 @@ class User(UserMixin):
         family_name: Optional[str] = None,
         gender: Optional[str] = None,
         locale: Optional[str] = None,
-    ) -> Optional[dict]:
+    ) -> Optional[User]:
         """Create new user"""
         user = User(
             id_=id_,
@@ -106,7 +106,7 @@ class User(UserMixin):
             return None
 
     @staticmethod
-    def update_donation(id_: str, amount: int) -> tuple(bool, dict | str):
+    def update_donation(id_: str, amount: int) -> tuple[bool, dict | str]:
         """Update user"""
         try:
             db = get_db()
@@ -122,6 +122,6 @@ class User(UserMixin):
             # if the item does not exist, we will get a ConditionalCheckFailedException, which we need to handle
             if e.response["Error"]["Code"] == "ConditionalCheckFailedException":
                 return False, f"User with id {id_} does not exist in user database."
-            return False, e
+            return False, repr(e)
         except Exception as e:
-            return False, e
+            return False, repr(e)
