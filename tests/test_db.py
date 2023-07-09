@@ -1,6 +1,6 @@
 """Tests the databse part of the app."""
 
-from FlaskApp.db import get_db
+from flask_app.db import get_db
 
 
 def test_get_close_db(app):
@@ -21,7 +21,7 @@ def test_init_db_command(runner, monkeypatch):
     def fake_init_db():
         Recorder.called = True
 
-    monkeypatch.setattr("FlaskApp.db.init_db", fake_init_db)
+    monkeypatch.setattr("flask_app.db.init_db", fake_init_db)
     result = runner.invoke(args=["init-db"])
     assert "Initialized" in result.output
     assert Recorder.called

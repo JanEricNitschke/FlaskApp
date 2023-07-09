@@ -8,8 +8,8 @@ from flask_login import (
     login_user,
 )
 
-from FlaskApp.auth import get_google_provider_cfg
-from FlaskApp.user import User
+from flask_app.auth import get_google_provider_cfg
+from flask_app.user import User
 
 # Will probably have to rewrite from scratch for my oauth setup
 
@@ -46,7 +46,7 @@ def test_logout(client, app):
         assert not isinstance(current_user, User)
 
 
-@patch("FlaskApp.auth.requests.get")
+@patch("flask_app.auth.requests.get")
 def test_get_google_provider_cfg(get_mock, app):
     """Tests get google provider cfg."""
     with app.app_context():
@@ -56,11 +56,11 @@ def test_get_google_provider_cfg(get_mock, app):
         )
 
 
-@patch("FlaskApp.auth.get_google_provider_cfg")
-@patch("FlaskApp.auth.login_user")
-@patch("FlaskApp.user.User.get")
-@patch("FlaskApp.auth.requests.post")
-@patch("FlaskApp.auth.requests.get")
+@patch("flask_app.auth.get_google_provider_cfg")
+@patch("flask_app.auth.login_user")
+@patch("flask_app.user.User.get")
+@patch("flask_app.auth.requests.post")
+@patch("flask_app.auth.requests.get")
 def test_callback(
     get_mock,
     post_mock,
@@ -149,7 +149,7 @@ def test_cancel(client):
     assert client.get("/auth/cancel").status_code == 200
 
 
-@patch("FlaskApp.auth.login_user")
+@patch("flask_app.auth.login_user")
 def test_registration(login_mock, client):
     """Tests registration."""
     assert client.get("/auth/registration").status_code == 200

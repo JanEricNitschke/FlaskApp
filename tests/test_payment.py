@@ -9,7 +9,7 @@ from flask_login import (
     login_user,
 )
 
-from FlaskApp.user import User
+from flask_app.user import User
 
 
 def test_checkout(client, app):
@@ -80,7 +80,7 @@ def test_cancel(client, app):
         assert client.get("/payment/cancel").status_code == 200
 
 
-@patch("FlaskApp.user.User.update_donation")
+@patch("flask_app.user.User.update_donation")
 @patch("stripe.Webhook.construct_event")
 def test_webhook(stripe_mock, donation_mock, client):
     """Tests webhook."""

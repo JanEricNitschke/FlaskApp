@@ -1,7 +1,7 @@
 """Tests user module."""
 
-from FlaskApp.db import get_db
-from FlaskApp.user import User
+from flask_app.db import get_db
+from flask_app.user import User
 
 
 def test_get(app):

@@ -4,8 +4,8 @@ import os
 
 import pytest
 
-from FlaskApp import create_app
-from FlaskApp.db import get_db, init_db
+from flask_app import create_app
+from flask_app.db import get_db, init_db
 
 
 @pytest.fixture(scope="session", autouse=True)

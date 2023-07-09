@@ -3,10 +3,10 @@
 import os
 from unittest.mock import patch
 
-from FlaskApp import create_app, load_user
+from flask_app import create_app, load_user
 
 
-@patch("FlaskApp.user.User.get")
+@patch("flask_app.user.User.get")
 def test_load_user(get_mock):
     """Tests load user."""
     get_mock.return_value = None

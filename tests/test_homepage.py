@@ -4,7 +4,7 @@ from flask_login import (
     login_user,
 )
 
-from FlaskApp.user import User
+from flask_app.user import User
 
 
 def test_homepage(client, app):

@@ -37,7 +37,6 @@ def create_app(test_config=None):
     with contextlib.suppress(OSError):
         os.makedirs(application.instance_path)
 
-
     client = WebApplicationClient(application.config["GOOGLE_AUTH_CLIENT_ID"])
     application.config["client"] = client
 
