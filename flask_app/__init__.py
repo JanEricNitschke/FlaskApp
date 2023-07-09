@@ -2,7 +2,7 @@
 
 import contextlib
 import os
-from typing import Optional
+from typing import Any, Mapping, Optional
 
 import stripe
 from flask import Flask
@@ -21,10 +21,12 @@ def load_user(user_id: str) -> Optional[User]:
     return User.get(user_id)
 
 
-def create_app(test_config=None):
+def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
     """Create and configure the application."""
     application = Flask(__name__, instance_relative_config=True)
-    application.config.from_mapping(SECRET_KEY="dev", DATABASE="flaskapp_userdata")
+    application.config.from_mapping(
+        SECRET_KEY="dev", DATABASE="flaskapp_userdata"  # noqa: S106
+    )
     os.environ["WSGI.URL_SCHEME"] = "https"
     if test_config is None:
         # load the instance config if it exists, when not testing
@@ -59,5 +61,8 @@ def create_app(test_config=None):
     return application
 
 
+# This needs to be removed for AWS
+# and the application = create_app() line
+# has to come down to the base level.
 if __name__ == "__main__":
     application = create_app()
