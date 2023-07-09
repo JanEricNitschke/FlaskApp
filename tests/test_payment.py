@@ -1,17 +1,19 @@
-"""Tests payment module"""
+"""Tests payment module."""
 # have to check what i can actually even test there
 
 from unittest.mock import MagicMock, patch
+
 import pytest
 import stripe
 from flask_login import (
     login_user,
 )
+
 from FlaskApp.user import User
 
 
 def test_checkout(client, app):
-    """Tests logout"""
+    """Tests logout."""
     user = User(
         id_="1",
         name="Test",
@@ -41,7 +43,7 @@ def test_checkout(client, app):
 
 
 def test_success(client, app):
-    """Tests success"""
+    """Tests success."""
     user = User(
         id_="1",
         name="Test",
@@ -60,7 +62,7 @@ def test_success(client, app):
 
 
 def test_cancel(client, app):
-    """Tests cancel"""
+    """Tests cancel."""
     user = User(
         id_="1",
         name="Test",
@@ -81,7 +83,7 @@ def test_cancel(client, app):
 @patch("FlaskApp.user.User.update_donation")
 @patch("stripe.Webhook.construct_event")
 def test_webhook(stripe_mock, donation_mock, client):
-    """Tests webhook"""
+    """Tests webhook."""
     headers = {"STRIPE_SIGNATURE": ""}
     payload = {}
     event_correct = {

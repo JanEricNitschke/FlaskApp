@@ -1,33 +1,31 @@
-"""The Application Factory"""
+"""The Application Factory."""
 
+import contextlib
 import os
 from typing import Optional
+
+import stripe
 from flask import Flask
 from flask_login import LoginManager
-import stripe
-
 from oauthlib.oauth2 import WebApplicationClient
+
+from . import auth, db, homepage, legal, payment
 from .user import User
-from . import db
-from . import auth
-from . import homepage
-from . import payment
-from . import legal
 
 login_manager = LoginManager()
 
 
 @login_manager.user_loader
 def load_user(user_id: str) -> Optional[User]:
-    """Defines user_loader"""
+    """Defines user_loader."""
     return User.get(user_id)
 
 
 def create_app(test_config=None):
-    """create and configure the application"""
+    """Create and configure the application."""
     application = Flask(__name__, instance_relative_config=True)
     application.config.from_mapping(SECRET_KEY="dev", DATABASE="flaskapp_userdata")
-    os.environ["wsgi.url_scheme"] = "https"
+    os.environ["WSGI.URL_SCHEME"] = "https"
     if test_config is None:
         # load the instance config if it exists, when not testing
         application.config.from_pyfile("config.py", silent=True)
@@ -36,10 +34,9 @@ def create_app(test_config=None):
         application.config.from_mapping(test_config)
 
     # ensure instance folder exists
-    try:
+    with contextlib.suppress(OSError):
         os.makedirs(application.instance_path)
-    except OSError:
-        pass
+
 
     client = WebApplicationClient(application.config["GOOGLE_AUTH_CLIENT_ID"])
     application.config["client"] = client

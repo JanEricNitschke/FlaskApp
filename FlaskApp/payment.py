@@ -1,16 +1,15 @@
-"""Handles payments"""
+"""Handles payments."""
+import stripe
 from flask import (
     Blueprint,
+    current_app,
+    jsonify,
     redirect,
     render_template,
     request,
     url_for,
-    current_app,
-    jsonify,
 )
-
-from flask_login import login_required, current_user
-import stripe
+from flask_login import current_user, login_required
 
 from .user import User
 
@@ -20,7 +19,7 @@ bp = Blueprint("payment", __name__, url_prefix="/payment")
 @bp.route("/checkout", methods=(["POST"]))
 @login_required
 def checkout():
-    """checkout"""
+    """Checkout."""
     checkout_session = stripe.checkout.Session.create(
         line_items=[
             {
@@ -42,20 +41,20 @@ def checkout():
 @bp.route("/success", methods=(["GET"]))
 @login_required
 def success():
-    """checkout"""
+    """Checkout."""
     return render_template("payment/success.html")
 
 
 @bp.route("/cancel", methods=(["GET"]))
 @login_required
 def cancel():
-    """checkout"""
+    """Checkout."""
     return render_template("payment/cancel.html")
 
 
 @bp.route("/webhook", methods=(["POST"]))
 def webhook():
-    """Webhook to receive payment confirmation and update db"""
+    """Webhook to receive payment confirmation and update db."""
     event = None
     payload = request.data
     sig_header = request.headers["STRIPE_SIGNATURE"]

@@ -1,29 +1,29 @@
-"""Defines the authorization functionality"""
+"""Defines the authorization functionality."""
 import json
+
+# Third-party libraries
+import requests
 from flask import (
     Blueprint,
+    current_app,
+    make_response,
     redirect,
     render_template,
     request,
     url_for,
-    current_app,
-    make_response,
 )
-
 from flask_login import (
     login_user,
     logout_user,
 )
 
-# Third-party libraries
-import requests
 from .user import User
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 def get_google_provider_cfg():
-    """Get google provider config"""
+    """Get google provider config."""
     return requests.get(
         current_app.config["GOOGLE_AUTH_DISCOVERY_URL"], timeout=100
     ).json()
@@ -31,7 +31,7 @@ def get_google_provider_cfg():
 
 @bp.route("/login/callback")
 def callback():
-    """Login callback for google oauth to call"""
+    """Login callback for google oauth to call."""
     client = current_app.config["client"]
     # Get authorization code Google sent back to you
     code = request.args.get("code")
@@ -82,7 +82,7 @@ def callback():
 
 @bp.route("/registration", methods=("GET", "POST"))
 def registration():
-    """Registration logic"""
+    """Registration logic."""
     if request.method == "POST":
         # Find out what URL to hit for Google login
         user_info = request.cookies.get("user_info")
@@ -132,13 +132,13 @@ def registration():
 
 @bp.route("/cancel")
 def cancel():
-    """Registration canceled"""
+    """Registration canceled."""
     return render_template("auth/cancel.html")
 
 
 @bp.route("/login", methods=("GET", "POST"))
 def login():
-    """Login logic"""
+    """Login logic."""
     if request.method == "POST":
         # Find out what URL to hit for Google login
         client = current_app.config["client"]
@@ -159,6 +159,6 @@ def login():
 
 @bp.route("/logout")
 def logout():
-    """Logs the user out"""
+    """Logs the user out."""
     logout_user()
     return redirect(url_for("index"))

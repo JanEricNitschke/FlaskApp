@@ -1,11 +1,11 @@
-"""Tests user module"""
+"""Tests user module."""
 
-from FlaskApp.user import User
 from FlaskApp.db import get_db
+from FlaskApp.user import User
 
 
 def test_get(app):
-    """Test User.get()"""
+    """Test User.get()."""
     with app.app_context():
         assert User.get("2") is None
         user = User.get("1")
@@ -14,7 +14,7 @@ def test_get(app):
 
 
 def test_create(app):
-    """Tests User.create()"""
+    """Tests User.create()."""
     with app.app_context():
         assert (
             User.create(
@@ -39,7 +39,7 @@ def test_create(app):
 
 
 def test_update_donation(app):
-    """Tests User.update_donation()"""
+    """Tests User.update_donation()."""
     with app.app_context():
         success, user = User.update_donation("1", 1000)
         assert success is True

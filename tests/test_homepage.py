@@ -1,13 +1,14 @@
-"""Tests homepage module"""
+"""Tests homepage module."""
 
 from flask_login import (
     login_user,
 )
+
 from FlaskApp.user import User
 
 
 def test_homepage(client, app):
-    """Tests homepage"""
+    """Tests homepage."""
     user = User(
         id_="1",
         name="Test",

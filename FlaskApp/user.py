@@ -1,14 +1,15 @@
-"""Handles keeping track of the user"""
+"""Handles keeping track of the user."""
 
 from __future__ import annotations
-from typing import Optional
-from flask_login import UserMixin
+
 from botocore.exceptions import ClientError
+from flask_login import UserMixin
+
 from .db import get_db
 
 
 class User(UserMixin):
-    """Class that stores userinformation"""
+    """Class that stores userinformation."""
 
     def __init__(
         self,
@@ -17,12 +18,12 @@ class User(UserMixin):
         email: str,
         profile_pic: str,
         paid: bool = False,
-        expires: Optional[str] = None,
+        expires: str | None = None,
         amount: int = 0,
-        family_name: Optional[str] = None,
-        gender: Optional[str] = None,
-        locale: Optional[str] = None,
-    ):
+        family_name: str | None = None,
+        gender: str | None = None,
+        locale: str | None = None,
+    ) -> None:
         self.id = id_
         self.name = name
         self.email = email
@@ -35,14 +36,14 @@ class User(UserMixin):
         self.locale = locale
 
     @staticmethod
-    def get(user_id: str) -> Optional[User]:
-        """Grab existing user"""
+    def get(user_id: str) -> User | None:
+        """Grab existing user."""
         db = get_db()
         response = db.get_item(Key={"userid": user_id})
         if "Item" not in response:
             return None
         item = response["Item"]
-        user = User(
+        return User(
             id_=item["userid"],
             name=item["name"],
             email=item["email"],
@@ -54,7 +55,6 @@ class User(UserMixin):
             gender=item["gender"],
             locale=item["locale"],
         )
-        return user
 
     @staticmethod
     def create(
@@ -63,13 +63,13 @@ class User(UserMixin):
         email: str,
         profile_pic: str,
         paid: bool = False,
-        expires: Optional[str] = None,
+        expires: str | None = None,
         amount: int = 0,
-        family_name: Optional[str] = None,
-        gender: Optional[str] = None,
-        locale: Optional[str] = None,
-    ) -> Optional[User]:
-        """Create new user"""
+        family_name: str | None = None,
+        gender: str | None = None,
+        locale: str | None = None,
+    ) -> User | None:
+        """Create new user."""
         user = User(
             id_=id_,
             name=name,
@@ -81,7 +81,7 @@ class User(UserMixin):
         )
         db = get_db()
         try:
-            response = db.put_item(
+            db.put_item(
                 Item={
                     "userid": id_,
                     "email": email,
@@ -102,12 +102,11 @@ class User(UserMixin):
             # other exceptions.
             if e.response["Error"]["Code"] != "ConditionalCheckFailedException":
                 raise
-            error = f"User {name} with email {email} is already registered."
             return None
 
     @staticmethod
     def update_donation(id_: str, amount: int) -> tuple[bool, dict | str]:
-        """Update user"""
+        """Update user."""
         try:
             db = get_db()
             user = db.update_item(

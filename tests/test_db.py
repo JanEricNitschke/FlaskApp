@@ -1,20 +1,20 @@
-"""Tests the databse part of the app"""
+"""Tests the databse part of the app."""
 
 from FlaskApp.db import get_db
 
 
 def test_get_close_db(app):
-    """Tests getting and closing the database"""
+    """Tests getting and closing the database."""
     with app.app_context():
         db = get_db()
         assert db is get_db()
 
 
 def test_init_db_command(runner, monkeypatch):
-    """Tests the db init command"""
+    """Tests the db init command."""
 
     class Recorder:
-        """Records stuff"""
+        """Records stuff."""
 
         called = False
 

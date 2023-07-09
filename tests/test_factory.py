@@ -1,13 +1,14 @@
-"""Test factory"""
+"""Test factory."""
 
 import os
 from unittest.mock import patch
+
 from FlaskApp import create_app, load_user
 
 
 @patch("FlaskApp.user.User.get")
 def test_load_user(get_mock):
-    """Tests load user"""
+    """Tests load user."""
     get_mock.return_value = None
     user_id = "1"
     load_user(user_id)
@@ -18,7 +19,7 @@ def test_load_user(get_mock):
 
 
 def test_config():
-    """Test that testing config loading works"""
+    """Test that testing config loading works."""
     assert not create_app(
         {
             "DATABASE": "test_flaskapp_userdata",

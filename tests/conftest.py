@@ -1,14 +1,16 @@
-"""Sets up testing enviroment"""
+"""Sets up testing enviroment."""
 
 import os
+
 import pytest
+
 from FlaskApp import create_app
 from FlaskApp.db import get_db, init_db
 
 
 @pytest.fixture(scope="session", autouse=True)
 def app():
-    """Fixture for initializing the app"""
+    """Fixture for initializing the app."""
     app = create_app(
         {
             "TESTING": True,
@@ -51,13 +53,13 @@ def app():
     table.delete_item(Key={"userid": "1"})
 
 
-@pytest.fixture
+@pytest.fixture()
 def client(app):
-    """Fixture to be able to issue client commands"""
+    """Fixture to be able to issue client commands."""
     return app.test_client()
 
 
-@pytest.fixture
+@pytest.fixture()
 def runner(app):
-    """Fixture to be able to issue cli runner commands"""
+    """Fixture to be able to issue cli runner commands."""
     return app.test_cli_runner()

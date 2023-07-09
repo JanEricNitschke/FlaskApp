@@ -1,19 +1,21 @@
-"""Tests auth module"""
+"""Tests auth module."""
 
 import json
 from unittest.mock import MagicMock, patch
+
 from flask_login import (
-    login_user,
     current_user,
+    login_user,
 )
-from FlaskApp.user import User
+
 from FlaskApp.auth import get_google_provider_cfg
+from FlaskApp.user import User
 
 # Will probably have to rewrite from scratch for my oauth setup
 
 
 def test_login(app, client):
-    """Tests login"""
+    """Tests login."""
     assert client.get("/auth/login").status_code == 200
 
     webappclient = app.config["client"]
@@ -24,7 +26,7 @@ def test_login(app, client):
 
 
 def test_logout(client, app):
-    """Tests logout"""
+    """Tests logout."""
     user = User(
         id_="1",
         name="Test",
@@ -46,7 +48,7 @@ def test_logout(client, app):
 
 @patch("FlaskApp.auth.requests.get")
 def test_get_google_provider_cfg(get_mock, app):
-    """Tests get google provider cfg"""
+    """Tests get google provider cfg."""
     with app.app_context():
         get_google_provider_cfg()
         get_mock.assert_called_with(
@@ -68,7 +70,7 @@ def test_callback(
     app,
     client,
 ):
-    """Tests callback"""
+    """Tests callback."""
     webappclient = app.config["client"]
     mock_google_prov.return_value = {"token_endpoint": "", "userinfo_endpoint": ""}
     webappclient.prepare_token_request = MagicMock(return_value=("A", "B", "C"))
@@ -143,13 +145,13 @@ def test_callback(
 
 
 def test_cancel(client):
-    """Tests cancel"""
+    """Tests cancel."""
     assert client.get("/auth/cancel").status_code == 200
 
 
 @patch("FlaskApp.auth.login_user")
 def test_registration(login_mock, client):
-    """Tests registration"""
+    """Tests registration."""
     assert client.get("/auth/registration").status_code == 200
     response = client.post("/auth/registration")
     assert response.status_code == 408
