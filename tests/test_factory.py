@@ -1,13 +1,13 @@
 """Test factory."""
 
 import os
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from flask_app import create_app, load_user
 
 
 @patch("flask_app.user.User.get")
-def test_load_user(get_mock):
+def test_load_user(get_mock: MagicMock):
     """Tests load user."""
     get_mock.return_value = None
     user_id = "1"

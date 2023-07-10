@@ -1,10 +1,13 @@
 """Tests user module."""
 
+
+from flask import Flask
+
 from flask_app.db import get_db
 from flask_app.user import User
 
 
-def test_get(app):
+def test_get(app: Flask):
     """Test User.get()."""
     with app.app_context():
         assert User.get("2") is None
@@ -13,23 +16,23 @@ def test_get(app):
         assert user.name == "Test"
 
 
-def test_create(app):
+def test_create(app: Flask):
     """Tests User.create()."""
     with app.app_context():
         assert (
             User.create(
-                "1",
-                "Test",
-                "test@test.com",
-                "test.png",
+                id_="1",
+                name="Test",
+                email="test@test.com",
+                profile_pic="test.png",
             )
             is None
         )
         response = User.create(
-            "2",
-            "Test2",
-            "test@test.de",
-            "test2.png",
+            id_="2",
+            name="Test2",
+            email="test@test.de",
+            profile_pic="test2.png",
         )
         assert response is not None
         assert isinstance(response, User)
@@ -38,7 +41,7 @@ def test_create(app):
         table.delete_item(Key={"userid": "2"})
 
 
-def test_update_donation(app):
+def test_update_donation(app: Flask):
     """Tests User.update_donation()."""
     with app.app_context():
         success, user = User.update_donation("1", 1000)

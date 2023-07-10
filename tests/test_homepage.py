@@ -1,5 +1,7 @@
 """Tests homepage module."""
 
+from flask import Flask
+from flask.testing import FlaskClient
 from flask_login import (
     login_user,
 )
@@ -7,7 +9,7 @@ from flask_login import (
 from flask_app.user import User
 
 
-def test_homepage(client, app):
+def test_homepage(client: FlaskClient, app: Flask):
     """Tests homepage."""
     user = User(
         id_="1",

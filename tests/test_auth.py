@@ -3,6 +3,8 @@
 import json
 from unittest.mock import MagicMock, patch
 
+from flask import Flask
+from flask.testing import FlaskClient
 from flask_login import (
     current_user,
     login_user,
@@ -14,7 +16,7 @@ from flask_app.user import User
 # Will probably have to rewrite from scratch for my oauth setup
 
 
-def test_login(app, client):
+def test_login(app: Flask, client: FlaskClient):
     """Tests login."""
     assert client.get("/auth/login").status_code == 200
 
@@ -25,7 +27,7 @@ def test_login(app, client):
     assert response.headers["Location"] == "/redirect_uri"
 
 
-def test_logout(client, app):
+def test_logout(client: FlaskClient, app: Flask):
     """Tests logout."""
     user = User(
         id_="1",
@@ -47,7 +49,7 @@ def test_logout(client, app):
 
 
 @patch("flask_app.auth.requests.get")
-def test_get_google_provider_cfg(get_mock, app):
+def test_get_google_provider_cfg(get_mock: MagicMock, app: Flask):
     """Tests get google provider cfg."""
     with app.app_context():
         get_google_provider_cfg()
@@ -62,13 +64,13 @@ def test_get_google_provider_cfg(get_mock, app):
 @patch("flask_app.auth.requests.post")
 @patch("flask_app.auth.requests.get")
 def test_callback(
-    get_mock,
-    post_mock,
-    user_get_mock,
-    login_mock,
-    mock_google_prov,
-    app,
-    client,
+    get_mock: MagicMock,
+    post_mock: MagicMock,
+    user_get_mock: MagicMock,
+    login_mock: MagicMock,
+    mock_google_prov: MagicMock,
+    app: Flask,
+    client: FlaskClient,
 ):
     """Tests callback."""
     webappclient = app.config["client"]
@@ -106,7 +108,7 @@ def test_callback(
     mock_post_response.json.return_value = {"empty": True}
     post_mock.return_value = mock_post_response
 
-    def user_get_side_effects(unique_id):
+    def user_get_side_effects(unique_id: str) -> bool:
         return unique_id == "1"
 
     user_get_mock.side_effect = user_get_side_effects
@@ -144,13 +146,13 @@ def test_callback(
     assert response.headers["Location"] == "/"
 
 
-def test_cancel(client):
+def test_cancel(client: FlaskClient):
     """Tests cancel."""
     assert client.get("/auth/cancel").status_code == 200
 
 
 @patch("flask_app.auth.login_user")
-def test_registration(login_mock, client):
+def test_registration(login_mock: MagicMock, client: FlaskClient):
     """Tests registration."""
     assert client.get("/auth/registration").status_code == 200
     response = client.post("/auth/registration")

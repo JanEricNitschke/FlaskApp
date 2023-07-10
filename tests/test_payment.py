@@ -1,10 +1,13 @@
 """Tests payment module."""
 # have to check what i can actually even test there
 
+import re
 from unittest.mock import MagicMock, patch
 
 import pytest
 import stripe
+from flask import Flask
+from flask.testing import FlaskClient
 from flask_login import (
     login_user,
 )
@@ -12,7 +15,7 @@ from flask_login import (
 from flask_app.user import User
 
 
-def test_checkout(client, app):
+def test_checkout(client: FlaskClient, app: Flask):
     """Tests logout."""
     user = User(
         id_="1",
@@ -42,7 +45,7 @@ def test_checkout(client, app):
         assert response.headers["Location"] == "/checkout_session"
 
 
-def test_success(client, app):
+def test_success(client: FlaskClient, app: Flask):
     """Tests success."""
     user = User(
         id_="1",
@@ -61,7 +64,7 @@ def test_success(client, app):
         assert client.get("/payment/success").status_code == 200
 
 
-def test_cancel(client, app):
+def test_cancel(client: FlaskClient, app: Flask):
     """Tests cancel."""
     user = User(
         id_="1",
@@ -82,7 +85,7 @@ def test_cancel(client, app):
 
 @patch("flask_app.user.User.update_donation")
 @patch("stripe.Webhook.construct_event")
-def test_webhook(stripe_mock, donation_mock, client):
+def test_webhook(stripe_mock: MagicMock, donation_mock: MagicMock, client: FlaskClient):
     """Tests webhook."""
     headers = {"STRIPE_SIGNATURE": ""}
     payload = {}
@@ -103,9 +106,11 @@ def test_webhook(stripe_mock, donation_mock, client):
 
     donation_mock.side_effect = [(False, "an error"), (True, "a user")]
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=re.escape("Invalid payload")):
         client.post("/payment/webhook", data=payload, headers=headers)
-    with pytest.raises(stripe.error.SignatureVerificationError):
+    with pytest.raises(
+        stripe.error.SignatureVerificationError, match=re.escape("Invalid signature")
+    ):
         client.post("/payment/webhook", data=payload, headers=headers)
     response = client.post("/payment/webhook", data=payload, headers=headers)
     assert response.status_code == 200

@@ -1,15 +1,20 @@
 """Sets up testing enviroment."""
 
+# pylint: disable=redefined-outer-name
+
 import os
+from collections.abc import Iterator
 
 import pytest
+from flask import Flask
+from flask.testing import FlaskClient, FlaskCliRunner
 
 from flask_app import create_app
 from flask_app.db import get_db, init_db
 
 
 @pytest.fixture(scope="session", autouse=True)
-def app():
+def app() -> Iterator[Flask]:
     """Fixture for initializing the app."""
     app = create_app(
         {
@@ -54,12 +59,12 @@ def app():
 
 
 @pytest.fixture()
-def client(app):
+def client(app: Flask) -> FlaskClient:
     """Fixture to be able to issue client commands."""
     return app.test_client()
 
 
 @pytest.fixture()
-def runner(app):
+def runner(app: Flask) -> FlaskCliRunner:
     """Fixture to be able to issue cli runner commands."""
     return app.test_cli_runner()
