@@ -13,6 +13,7 @@ class User(UserMixin):
 
     def __init__(
         self,
+        *,
         id_: str,
         name: str,
         email: str,
@@ -24,6 +25,21 @@ class User(UserMixin):
         gender: str | None = None,
         locale: str | None = None,
     ) -> None:
+        """Initialize the User instance.
+
+        Args:
+            id_ (str): Unique user ID
+            name (str): (First) name of the user
+            email (str): User email address
+            profile_pic (str): Link to their profile pic
+            paid (bool, optional): Whether the user has donated. Defaults to False.
+            expires (str | None, optional): When the paid status expires.
+                Defaults to None.
+            amount (int, optional): Amount paid/donated. Defaults to 0.
+            family_name (str | None, optional): Users family name. Defaults to None.
+            gender (str | None, optional): Users gender. Defaults to None.
+            locale (str | None, optional): Users locale. Defaults to None.
+        """
         self.id = id_
         self.name = name
         self.email = email
@@ -58,6 +74,7 @@ class User(UserMixin):
 
     @staticmethod
     def create(
+        *,
         id_: str,
         name: str,
         email: str,
@@ -79,9 +96,9 @@ class User(UserMixin):
             gender=gender,
             locale=locale,
         )
-        db = get_db()
+        database = get_db()
         try:
-            db.put_item(
+            database.put_item(
                 Item={
                     "userid": id_,
                     "email": email,
@@ -108,8 +125,8 @@ class User(UserMixin):
     def update_donation(id_: str, amount: int) -> tuple[bool, dict | str]:
         """Update user."""
         try:
-            db = get_db()
-            user = db.update_item(
+            database = get_db()
+            user = database.update_item(
                 Key={"userid": id_},
                 UpdateExpression="add amount :d set paid = :p",
                 ExpressionAttributeValues={":p": True, ":d": amount},
@@ -118,9 +135,10 @@ class User(UserMixin):
             )["Attributes"]
             return True, user
         except ClientError as e:
-            # if the item does not exist, we will get a ConditionalCheckFailedException, which we need to handle
+            # if the item does not exist,
+            # we will get a ConditionalCheckFailedException, which we need to handle
             if e.response["Error"]["Code"] == "ConditionalCheckFailedException":
                 return False, f"User with id {id_} does not exist in user database."
             return False, repr(e)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 # pylint: disable=broad-except
             return False, repr(e)

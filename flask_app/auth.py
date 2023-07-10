@@ -114,10 +114,10 @@ def registration_get() -> Response | str:
     )
     if not User.get(unique_id):
         User.create(
-            unique_id,
-            users_name,
-            users_email,
-            picture,
+            id_=unique_id,
+            name=users_name,
+            email=users_email,
+            profile_pic=picture,
             family_name=family_name,
             gender=gender,
             locale=locale,
