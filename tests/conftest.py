@@ -1,11 +1,14 @@
 """Sets up testing enviroment."""
 
-# pylint: disable=redefined-outer-name
 
+import contextlib
+
+# pylint: disable=redefined-outer-name
 import os
 from collections.abc import Iterator
 
 import pytest
+from botocore.exceptions import ClientError
 from flask import Flask
 from flask.testing import FlaskClient, FlaskCliRunner
 
@@ -56,6 +59,8 @@ def app() -> Iterator[Flask]:
     yield app
     # remove the above entries from the db
     table.delete_item(Key={"userid": "1"})
+    with contextlib.suppress(ClientError):
+        table.delete_item(Key={"userid": "2"})
 
 
 @pytest.fixture()

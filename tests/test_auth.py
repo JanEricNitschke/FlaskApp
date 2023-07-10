@@ -30,7 +30,7 @@ def test_login(app: Flask, client: FlaskClient):
 def test_logout(client: FlaskClient, app: Flask):
     """Tests logout."""
     user = User(
-        id_="1",
+        userid="1",
         name="Test",
         email="test@test.com",
         profile_pic="test.png",

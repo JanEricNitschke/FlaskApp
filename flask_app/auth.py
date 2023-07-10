@@ -41,7 +41,9 @@ def callback() -> Response:
     code = request.args.get("code")
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
-    request.url = request.url.replace("http://", "https://", 1)
+    request.url = request.url.replace(
+        "http://", "https://", 1
+    )  # pyright: ignore [reportGeneralTypeIssues]
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
@@ -104,7 +106,7 @@ def registration_get() -> Response | str:
     else:
         abort(400, "User email not available or not verified by Google.")
     user = User(
-        id_=unique_id,
+        userid=unique_id,
         name=users_name,
         email=users_email,
         profile_pic=picture,
@@ -114,7 +116,7 @@ def registration_get() -> Response | str:
     )
     if not User.get(unique_id):
         User.create(
-            id_=unique_id,
+            userid=unique_id,
             name=users_name,
             email=users_email,
             profile_pic=picture,
@@ -153,7 +155,7 @@ def registration() -> Response | str:
     else:
         abort(400, "User email not available or not verified by Google.")
     user = User(
-        id_=unique_id,
+        userid=unique_id,
         name=users_name,
         email=users_email,
         profile_pic=picture,
@@ -163,10 +165,10 @@ def registration() -> Response | str:
     )
     if not User.get(unique_id):
         User.create(
-            unique_id,
-            users_name,
-            users_email,
-            picture,
+            userid=unique_id,
+            name=users_name,
+            email=users_email,
+            profile_pic=picture,
             family_name=family_name,
             gender=gender,
             locale=locale,

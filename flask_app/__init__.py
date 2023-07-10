@@ -49,7 +49,7 @@ def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
     db.init_app(app)
 
     app.register_blueprint(auth.bp)
-    login_manager.login_view = "auth.login"
+    login_manager.login_view = "auth.login"  # pyright: ignore [reportGeneralTypeIssues]
 
     app.register_blueprint(homepage.bp)
     app.add_url_rule("/", endpoint="index")

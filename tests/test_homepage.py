@@ -12,7 +12,7 @@ from flask_app.user import User
 def test_homepage(client: FlaskClient, app: Flask):
     """Tests homepage."""
     user = User(
-        id_="1",
+        userid="1",
         name="Test",
         email="test@test.com",
         profile_pic="test.png",

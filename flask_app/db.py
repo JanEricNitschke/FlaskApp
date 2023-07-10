@@ -5,6 +5,8 @@ from botocore.exceptions import ClientError
 from flask import Flask, current_app, g
 from mypy_boto3_dynamodb.service_resource import Table
 
+from .helpers import check_error_code
+
 
 def get_db() -> Table:
     """Grab the db."""
@@ -26,11 +28,7 @@ def get_db() -> Table:
             )
             table.wait_until_exists()
         except ClientError as e:
-            if (
-                "Error" in e.response
-                and "Code" in e.response["Error"]
-                and e.response["Error"]["Code"] == "ResourceInUseException"
-            ):
+            if check_error_code(e, "ResourceInUseException"):
                 # could also delete and recreate it
                 # and then recreate it (is faster than deleting all entries one by one)
                 table = dynamodb.Table(current_app.config["DATABASE"])

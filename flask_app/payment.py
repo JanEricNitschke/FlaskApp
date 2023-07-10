@@ -17,7 +17,7 @@ from .user import User
 bp = Blueprint("payment", __name__, url_prefix="/payment")
 
 
-@bp.route("/checkout", methods=(["POST"]))
+@bp.route("/checkout", methods=["POST"])
 @login_required
 def checkout() -> Response:
     """Checkout."""
@@ -34,27 +34,30 @@ def checkout() -> Response:
         submit_type="donate",
         success_url=url_for("payment.success", _external=True, _scheme="https"),
         cancel_url=url_for("payment.cancel", _external=True, _scheme="https"),
-        client_reference_id=current_user.id,
+        # Has to exist because we are requiring login
+        client_reference_id=(
+            current_user.get_id()  # pyright: ignore[reportGeneralTypeIssues]
+        ),
     )
 
     return redirect(checkout_session.url, code=303)
 
 
-@bp.route("/success", methods=(["GET"]))
+@bp.route("/success", methods=["GET"])
 @login_required
 def success() -> str:
     """Checkout."""
     return render_template("payment/success.html")
 
 
-@bp.route("/cancel", methods=(["GET"]))
+@bp.route("/cancel", methods=["GET"])
 @login_required
 def cancel() -> str:
     """Checkout."""
     return render_template("payment/cancel.html")
 
 
-@bp.route("/webhook", methods=(["POST"]))
+@bp.route("/webhook", methods=["POST"])
 def webhook() -> Response:
     """Webhook to receive payment confirmation and update db."""
     event = None

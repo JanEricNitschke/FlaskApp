@@ -26,6 +26,7 @@ pathspec==0.10.1
 pip==22.3
 platformdirs==2.5.2
 pycparser==2.21
+pydantic==2.0.2
 pylint==2.15.5
 pyOpenSSL==22.1.0
 python-dateutil==2.8.2

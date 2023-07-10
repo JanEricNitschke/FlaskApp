@@ -18,7 +18,7 @@ from flask_app.user import User
 def test_checkout(client: FlaskClient, app: Flask):
     """Tests logout."""
     user = User(
-        id_="1",
+        userid="1",
         name="Test",
         email="test@test.com",
         profile_pic="test.png",
@@ -48,7 +48,7 @@ def test_checkout(client: FlaskClient, app: Flask):
 def test_success(client: FlaskClient, app: Flask):
     """Tests success."""
     user = User(
-        id_="1",
+        userid="1",
         name="Test",
         email="test@test.com",
         profile_pic="test.png",
@@ -67,7 +67,7 @@ def test_success(client: FlaskClient, app: Flask):
 def test_cancel(client: FlaskClient, app: Flask):
     """Tests cancel."""
     user = User(
-        id_="1",
+        userid="1",
         name="Test",
         email="test@test.com",
         profile_pic="test.png",
