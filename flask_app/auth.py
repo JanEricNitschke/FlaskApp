@@ -2,7 +2,7 @@
 import json
 
 # Third-party libraries
-from typing import Any
+from typing import Any, Union
 
 import requests
 from flask import (
@@ -82,7 +82,7 @@ def callback() -> Response:
 
 
 @bp.route("/registration", methods=("GET", "POST"))
-def registration_get() -> Response | str:
+def registration_get() -> Union[Response, str]:
     """Registration logic."""
     if request.method != "POST":
         return render_template("auth/registration.html")
@@ -131,7 +131,7 @@ def registration_get() -> Response | str:
 
 
 @bp.route("/registration", methods=("GET", "POST"))
-def registration() -> Response | str:
+def registration() -> Union[Response, str]:
     """Registration logic."""
     if request.method != "POST":
         return render_template("auth/registration.html")
@@ -186,7 +186,7 @@ def cancel() -> str:
 
 
 @bp.route("/login", methods=("GET", "POST"))
-def login() -> Response | str:
+def login() -> Union[Response, str]:
     """Login logic."""
     if request.method == "POST":
         # Find out what URL to hit for Google login

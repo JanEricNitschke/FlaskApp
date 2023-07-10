@@ -2,7 +2,7 @@
 
 import contextlib
 import os
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Union
 
 import stripe
 from flask import Flask
@@ -21,7 +21,7 @@ def load_user(user_id: str) -> Optional[User]:
     return User.get(user_id)
 
 
-def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
+def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Flask:
     """Create and configure the application."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
