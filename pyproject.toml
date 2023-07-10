@@ -138,3 +138,10 @@ max-args = 15
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes = 7
+
+[tool.coverage.run]
+branch = true
+source = ["flask_app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

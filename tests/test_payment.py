@@ -97,7 +97,7 @@ def test_webhook(stripe_mock: MagicMock, donation_mock: MagicMock, client: Flask
     stripe_mock.side_effect = [
         ValueError("Invalid payload"),
         stripe.error.SignatureVerificationError(
-            sig_header="Invalid signature", message=""
+            sig_header="Invalid signature", message="Invalid signature"
         ),
         event_wrong,
         event_correct,
