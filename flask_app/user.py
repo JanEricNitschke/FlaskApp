@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 from botocore.exceptions import ClientError
 from flask_login import UserMixin
 from pydantic import BaseModel
@@ -18,11 +20,11 @@ class User(UserMixin, BaseModel):
     email: str
     profile_pic: str
     paid: bool = False
-    expires: str | None = None
+    expires: Optional[str] = None
     amount: int = 0
-    family_name: str | None = None
-    gender: str | None = None
-    locale: str | None = None
+    family_name: Optional[str] = None
+    gender: Optional[str] = None
+    locale: Optional[str] = None
 
     @staticmethod
     def get(user_id: str) -> User | None:
@@ -42,12 +44,12 @@ class User(UserMixin, BaseModel):
         email: str,
         profile_pic: str,
         paid: bool = False,
-        expires: str | None = None,
+        expires: Optional[str] = None,
         amount: int = 0,
-        family_name: str | None = None,
-        gender: str | None = None,
-        locale: str | None = None,
-    ) -> User | None:
+        family_name: Optional[str] = None,
+        gender: Optional[str] = None,
+        locale: Optional[str] = None,
+    ) -> Optional[User]:
         """Create new user."""
         user = User(
             userid=userid,
