@@ -82,55 +82,6 @@ def callback() -> Response:
 
 
 @bp.route("/registration", methods=("GET", "POST"))
-def registration_get() -> Union[Response, str]:
-    """Registration logic."""
-    if request.method != "POST":
-        return render_template("auth/registration.html")
-    # Find out what URL to hit for Google login
-    user_info = request.cookies.get("user_info")
-    if user_info is None:
-        abort(408, "Could not get user information for registration")
-    else:
-        try:
-            userinfo_json = json.loads(user_info)
-        except TypeError:
-            abort(408, "Could not get user information for registration")
-    if userinfo_json.get("email_verified"):
-        unique_id = userinfo_json.get("sub")
-        users_email = userinfo_json.get("email")
-        picture = userinfo_json.get("picture")
-        users_name = userinfo_json.get("given_name")
-        family_name = userinfo_json.get("family_name")
-        gender = userinfo_json.get("gender")
-        locale = userinfo_json.get("locale")
-    else:
-        abort(400, "User email not available or not verified by Google.")
-    user = User(
-        userid=unique_id,
-        name=users_name,
-        email=users_email,
-        profile_pic=picture,
-        family_name=family_name,
-        gender=gender,
-        locale=locale,
-    )
-    if not User.get(unique_id):
-        User.create(
-            userid=unique_id,
-            name=users_name,
-            email=users_email,
-            profile_pic=picture,
-            family_name=family_name,
-            gender=gender,
-            locale=locale,
-        )
-    login_user(user)
-    resp = make_response(redirect(url_for("index")))
-    resp.delete_cookie("user_info")
-    return resp
-
-
-@bp.route("/registration", methods=("GET", "POST"))
 def registration() -> Union[Response, str]:
     """Registration logic."""
     if request.method != "POST":
