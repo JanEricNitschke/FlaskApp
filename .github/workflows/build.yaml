@@ -38,6 +38,9 @@ jobs:
       - name: Thorough check with pylint
         run: pylint flask_app
       - name: Test with pytest
+        env:
+          AWS_TESTDB_ACCESS_KEY_ID: ${{ secrets.AWS_TESTDB_ACCESS_KEY_ID }}
+          AWS_TESTDB_SECRET_ACCESS_KEY: ${{ secrets.AWS_TESTDB_SECRET_ACCESS_KEY }}
         run: |
           coverage run -m pytest --durations=10
           coverage report -m
