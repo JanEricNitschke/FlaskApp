@@ -10,6 +10,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
+from werkzeug.wrappers.response import Response
 
 from .user import User
 
@@ -18,12 +19,13 @@ bp = Blueprint("payment", __name__, url_prefix="/payment")
 
 @bp.route("/checkout", methods=(["POST"]))
 @login_required
-def checkout():
+def checkout() -> Response:
     """Checkout."""
     checkout_session = stripe.checkout.Session.create(
         line_items=[
             {
-                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell,
+                # Provide the exact Price ID (for example, pr_1234)
+                # of the product you want to sell,
                 "price": current_app.config["PRODUCT_ID"],
                 "quantity": 1,
             },
@@ -40,34 +42,27 @@ def checkout():
 
 @bp.route("/success", methods=(["GET"]))
 @login_required
-def success():
+def success() -> str:
     """Checkout."""
     return render_template("payment/success.html")
 
 
 @bp.route("/cancel", methods=(["GET"]))
 @login_required
-def cancel():
+def cancel() -> str:
     """Checkout."""
     return render_template("payment/cancel.html")
 
 
 @bp.route("/webhook", methods=(["POST"]))
-def webhook():
+def webhook() -> Response:
     """Webhook to receive payment confirmation and update db."""
     event = None
     payload = request.data
     sig_header = request.headers["STRIPE_SIGNATURE"]
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, current_app.config["STRIPE_WH_SECRET"]
-        )
-    except ValueError as e:
-        # Invalid payload
-        raise e
-    except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
-        raise e
+    event = stripe.Webhook.construct_event(
+        payload, sig_header, current_app.config["STRIPE_WH_SECRET"]
+    )
 
     # Handle the event
     if event["type"] == "checkout.session.completed":
@@ -75,9 +70,6 @@ def webhook():
         status, response = User.update_donation(
             session["client_reference_id"], session["amount_total"]
         )
-        if not status:
-            return response, 500
-        return response, 200
-
+        return Response(response, 200 if status else 500)
     print(f"Unhandled event type {event['type']}", flush=True)
     return jsonify(success=True)
