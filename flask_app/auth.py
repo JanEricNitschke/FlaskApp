@@ -2,9 +2,12 @@
 import json
 
 # Third-party libraries
+from typing import Any
+
 import requests
 from flask import (
     Blueprint,
+    abort,
     current_app,
     make_response,
     redirect,
@@ -16,13 +19,14 @@ from flask_login import (
     login_user,
     logout_user,
 )
+from werkzeug.wrappers.response import Response
 
 from .user import User
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
-def get_google_provider_cfg():
+def get_google_provider_cfg() -> Any:
     """Get google provider config."""
     return requests.get(
         current_app.config["GOOGLE_AUTH_DISCOVERY_URL"], timeout=100
@@ -30,7 +34,7 @@ def get_google_provider_cfg():
 
 
 @bp.route("/login/callback")
-def callback():
+def callback() -> Response:
     """Login callback for google oauth to call."""
     client = current_app.config["client"]
     # Get authorization code Google sent back to you
@@ -63,13 +67,8 @@ def callback():
     if userinfo_json.get("email_verified"):
         unique_id = userinfo_json.get("sub")
     else:
-        return "User email not available or not verified by Google.", 400
-    # Create a user in your db with the information provided
-    # by Google
-
-    user = User.get(unique_id)
-    # Doesn't exist? Add it to the database.
-    if user:
+        abort(400, "User email not available or not verified by Google.")
+    if user := User.get(unique_id):
         # Begin user session by logging the user in
         login_user(user)
         # Send user back to homepage
@@ -81,63 +80,111 @@ def callback():
 
 
 @bp.route("/registration", methods=("GET", "POST"))
-def registration():
+def registration_get() -> Response | str:
     """Registration logic."""
-    if request.method == "POST":
-        # Find out what URL to hit for Google login
-        user_info = request.cookies.get("user_info")
-        if user_info is None:
-            return "Could not get user information for registration", 408
-        else:
-            try:
-                userinfo_json = json.loads(user_info)
-            except TypeError:
-                return "Could not get user information for registration", 408
-        if userinfo_json.get("email_verified"):
-            unique_id = userinfo_json.get("sub")
-            users_email = userinfo_json.get("email")
-            picture = userinfo_json.get("picture")
-            users_name = userinfo_json.get("given_name")
-            family_name = userinfo_json.get("family_name")
-            gender = userinfo_json.get("gender")
-            locale = userinfo_json.get("locale")
-        else:
-            return "User email not available or not verified by Google.", 400
-        user = User(
-            id_=unique_id,
-            name=users_name,
-            email=users_email,
-            profile_pic=picture,
+    if request.method != "POST":
+        return render_template("auth/registration.html")
+    # Find out what URL to hit for Google login
+    user_info = request.cookies.get("user_info")
+    if user_info is None:
+        abort(408, "Could not get user information for registration")
+    else:
+        try:
+            userinfo_json = json.loads(user_info)
+        except TypeError:
+            abort(408, "Could not get user information for registration")
+    if userinfo_json.get("email_verified"):
+        unique_id = userinfo_json.get("sub")
+        users_email = userinfo_json.get("email")
+        picture = userinfo_json.get("picture")
+        users_name = userinfo_json.get("given_name")
+        family_name = userinfo_json.get("family_name")
+        gender = userinfo_json.get("gender")
+        locale = userinfo_json.get("locale")
+    else:
+        abort(400, "User email not available or not verified by Google.")
+    user = User(
+        id_=unique_id,
+        name=users_name,
+        email=users_email,
+        profile_pic=picture,
+        family_name=family_name,
+        gender=gender,
+        locale=locale,
+    )
+    if not User.get(unique_id):
+        User.create(
+            unique_id,
+            users_name,
+            users_email,
+            picture,
             family_name=family_name,
             gender=gender,
             locale=locale,
         )
-        if not User.get(unique_id):
-            User.create(
-                unique_id,
-                users_name,
-                users_email,
-                picture,
-                family_name=family_name,
-                gender=gender,
-                locale=locale,
-            )
-        login_user(user)
-        resp = make_response(redirect(url_for("index")))
-        resp.delete_cookie("user_info")
-        return resp
+    login_user(user)
+    resp = make_response(redirect(url_for("index")))
+    resp.delete_cookie("user_info")
+    return resp
 
-    return render_template("auth/registration.html")
+
+@bp.route("/registration", methods=("GET", "POST"))
+def registration() -> Response | str:
+    """Registration logic."""
+    if request.method != "POST":
+        return render_template("auth/registration.html")
+    # Find out what URL to hit for Google login
+    user_info = request.cookies.get("user_info")
+    if user_info is None:
+        abort(408, "Could not get user information for registration")
+    else:
+        try:
+            userinfo_json = json.loads(user_info)
+        except TypeError:
+            abort(408, "Could not get user information for registration")
+    if userinfo_json.get("email_verified"):
+        unique_id = userinfo_json.get("sub")
+        users_email = userinfo_json.get("email")
+        picture = userinfo_json.get("picture")
+        users_name = userinfo_json.get("given_name")
+        family_name = userinfo_json.get("family_name")
+        gender = userinfo_json.get("gender")
+        locale = userinfo_json.get("locale")
+    else:
+        abort(400, "User email not available or not verified by Google.")
+    user = User(
+        id_=unique_id,
+        name=users_name,
+        email=users_email,
+        profile_pic=picture,
+        family_name=family_name,
+        gender=gender,
+        locale=locale,
+    )
+    if not User.get(unique_id):
+        User.create(
+            unique_id,
+            users_name,
+            users_email,
+            picture,
+            family_name=family_name,
+            gender=gender,
+            locale=locale,
+        )
+    login_user(user)
+    resp = make_response(redirect(url_for("index")))
+    resp.delete_cookie("user_info")
+    return resp
 
 
 @bp.route("/cancel")
-def cancel():
+def cancel() -> str:
     """Registration canceled."""
     return render_template("auth/cancel.html")
 
 
 @bp.route("/login", methods=("GET", "POST"))
-def login():
+def login() -> Response | str:
     """Login logic."""
     if request.method == "POST":
         # Find out what URL to hit for Google login
@@ -158,7 +205,7 @@ def login():
 
 
 @bp.route("/logout")
-def logout():
+def logout() -> Response:
     """Logs the user out."""
     logout_user()
     return redirect(url_for("index"))
