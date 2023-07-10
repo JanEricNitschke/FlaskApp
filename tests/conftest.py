@@ -5,7 +5,7 @@ import contextlib
 
 # pylint: disable=redefined-outer-name
 import os
-from collections.abc import Iterator
+from typing import Iterator
 
 import pytest
 from botocore.exceptions import ClientError
