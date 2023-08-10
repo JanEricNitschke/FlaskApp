@@ -1,4 +1,4 @@
-"""Tests the databse part of the app."""
+"""Tests the database part of the app."""
 
 
 import pytest

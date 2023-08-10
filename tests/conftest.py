@@ -1,4 +1,4 @@
-"""Sets up testing enviroment."""
+"""Sets up testing environment."""
 
 
 import contextlib
