@@ -28,7 +28,11 @@ class User(UserMixin, BaseModel):
 
     @staticmethod
     def get(user_id: str) -> User | None:
-        """Grab existing user."""
+        """Grab existing user.
+
+        Returns:
+            User | None: Requested user or None if not found in the database.
+        """
         database = get_db()
         response = database.get_item(Key={"userid": user_id})
         if "Item" not in response:
@@ -50,7 +54,12 @@ class User(UserMixin, BaseModel):
         gender: Optional[str] = None,
         locale: Optional[str] = None,
     ) -> Optional[User]:
-        """Create new user."""
+        """Create new user.
+
+        Raises:
+            ClientError: If there was a ClientError when adding to the database
+                that was NOT a ConditionalCheckFailedException.
+        """
         user = User(
             userid=userid,
             name=name,

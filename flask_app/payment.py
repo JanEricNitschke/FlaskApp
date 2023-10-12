@@ -59,7 +59,11 @@ def cancel() -> str:
 
 @bp.route("/webhook", methods=["POST"])
 def webhook() -> Response:
-    """Webhook to receive payment confirmation and update db."""
+    """Webhook to receive payment confirmation and update db.
+
+    Returns:
+        Response: Updated user or success message.
+    """
     event = None
     payload = request.data
     sig_header = request.headers["STRIPE_SIGNATURE"]

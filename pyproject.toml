@@ -1,3 +1,11 @@
+[tool.pymend]
+extend-exclude             = "docs/|tests/"
+output-style               = "google"
+input-style                = "google"
+force-params-min-n-params  = 2
+force-meta-min-func-length = 5
+check                      = true
+
 [tool.ruff]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
 select = [

@@ -11,7 +11,12 @@ from .helpers import check_error_code
 
 
 def get_db() -> Table:
-    """Grab the db."""
+    """Grab the db.
+
+    Raises:
+        ClientError: If there was a dynamodb error that was
+            NOT a ResourceInUseException.
+    """
     if "db" not in g:
         dynamodb = boto3.resource(
             "dynamodb",

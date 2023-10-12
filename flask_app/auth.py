@@ -35,7 +35,11 @@ def get_google_provider_cfg() -> Any:
 
 @bp.route("/login/callback")
 def callback() -> Response:
-    """Login callback for google oauth to call."""
+    """Login callback for google oauth to call.
+
+    Returns:
+        Response: Redirection response to the registration page.
+    """
     client = current_app.config["client"]
     # Get authorization code Google sent back to you
     code = request.args.get("code")
@@ -83,7 +87,12 @@ def callback() -> Response:
 
 @bp.route("/registration", methods=("GET", "POST"))
 def registration() -> Union[Response, str]:
-    """Registration logic."""
+    """Registration logic.
+
+    Returns:
+        Union[Response, str]: Registration template if the request method is GET,
+            otherwise redirects to the index page after login.
+    """
     if request.method != "POST":
         return render_template("auth/registration.html")
     # Find out what URL to hit for Google login

@@ -22,7 +22,11 @@ def load_user(user_id: str) -> Optional[User]:
 
 
 def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Flask:
-    """Create and configure the application."""
+    """Create and configure the application.
+
+    Returns:
+        Flask: The flask application.
+    """
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev", DATABASE="flaskapp_userdata"  # noqa: S106
