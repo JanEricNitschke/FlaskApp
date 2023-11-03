@@ -7,5 +7,5 @@ Flask-Login==0.6.3
 oauthlib==3.2.2
 pydantic==2.4.2
 requests==2.31.0
-stripe==6.6.0
+stripe==7.3.0
 Werkzeug==3.0.1
