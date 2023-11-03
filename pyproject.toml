@@ -8,63 +8,8 @@ check                      = true
 
 [tool.ruff]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
-select = [
-    "E",
-    "F",
-    "B",
-    "W",
-    "I",
-    "N",
-    "D",
-    "UP",
-    "YTT",
-    "ANN",
-    "S",
-    "BLE",
-    "FBT",
-    "A",
-    "C4",
-    "DTZ",
-    "T10",
-    "EXE",
-    "ISC",
-    "ICN",
-    "G",
-    "INP",
-    "PIE",
-    "PYI",
-    "PT",
-    "Q",
-    "RSE",
-    "RET",
-    "SLF",
-    "SIM",
-    "TID",
-    "TCH",
-    "INT",
-    "ARG",
-    "ERA",
-    "PD",
-    "PERF",
-    "PGH",
-    "PLC",
-    "PLE",
-    "PLR",
-    "PLW",
-    "TRY",
-    "NPY",
-    "RUF",
-]
-ignore = [
-    # "D208",
-    "ANN101",
-    "ANN401",
-    # "ERA001",
-    # "T20",
-    # "PTH",
-    "TRY003",
-    "TRY300",
-] # , "PLR0912", "PLR0915", "PLR0913"
+select = ["ALL"]
+ignore = ["ANN101", "ANN401", "TRY003", "TRY300", "COM", "FA100", "PTH"]
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -118,8 +63,8 @@ exclude                            = ["tests"]
 strictListInference                = true
 strictDictionaryInference          = true
 reportPropertyTypeMismatch         = "error"
-reportFunctionMemberAccess         = "warning"
-reportMissingTypeStubs             = "warning"
+reportFunctionMemberAccess         = "error"
+reportMissingTypeStubs             = "none"
 reportUntypedFunctionDecorator     = "error"
 reportUntypedClassDecorator        = "error"
 reportUntypedBaseClass             = "error"
@@ -127,7 +72,7 @@ reportUntypedNamedTuple            = "error"
 reportPrivateUsage                 = "error"
 reportConstantRedefinition         = "error"
 reportOverlappingOverload          = "error"
-reportMissingParameterType         = "warning"
+reportMissingParameterType         = "error"
 reportUnnecessaryIsInstance        = "error"
 reportUnnecessaryCast              = "error"
 reportUnnecessaryComparison        = "error"

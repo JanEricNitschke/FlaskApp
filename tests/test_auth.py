@@ -170,10 +170,14 @@ def test_registration(login_mock: MagicMock, client: FlaskClient):
         "picture": "test.png",
         "given_name": "Test",
     }
-    client.set_cookie("localhost", "user_info", json.dumps(unverified_false))
+    client.set_cookie(
+        domain="localhost", key="user_info", value=json.dumps(unverified_false)
+    )
     response = client.post("/auth/registration")
     assert response.status_code == 400
-    client.set_cookie("localhost", "user_info", json.dumps(unverified_missing))
+    client.set_cookie(
+        domain="localhost", key="user_info", value=json.dumps(unverified_missing)
+    )
     response = client.post("/auth/registration")
     assert response.status_code == 400
     assert not login_mock.called
@@ -187,7 +191,7 @@ def test_registration(login_mock: MagicMock, client: FlaskClient):
         "gender": "male",
         "locale": "en",
     }
-    client.set_cookie("localhost", "user_info", json.dumps(verified))
+    client.set_cookie(domain="localhost", key="user_info", value=json.dumps(verified))
     response = client.post("/auth/registration")
     assert response.status_code == 302
     assert response.headers["Location"] == "/"

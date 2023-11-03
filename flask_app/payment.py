@@ -1,4 +1,6 @@
 """Handles payments."""
+from typing import Union
+
 import stripe
 from flask import (
     Blueprint,
@@ -19,27 +21,32 @@ bp = Blueprint("payment", __name__, url_prefix="/payment")
 
 @bp.route("/checkout", methods=["POST"])
 @login_required
-def checkout() -> Response:
+def checkout() -> Union[Response, str]:
     """Checkout."""
-    checkout_session = stripe.checkout.Session.create(
-        line_items=[
-            {
-                # Provide the exact Price ID (for example, pr_1234)
-                # of the product you want to sell,
-                "price": current_app.config["PRODUCT_ID"],
-                "quantity": 1,
-            },
-        ],
-        mode="payment",
-        submit_type="donate",
-        success_url=url_for("payment.success", _external=True, _scheme="https"),
-        cancel_url=url_for("payment.cancel", _external=True, _scheme="https"),
-        # Has to exist because we are requiring login
-        client_reference_id=(
-            current_user.get_id()  # pyright: ignore[reportGeneralTypeIssues]
-        ),
-    )
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234)
+                    # of the product you want to sell,
+                    "price": current_app.config["PRODUCT_ID"],
+                    "quantity": 1,
+                },
+            ],
+            mode="payment",
+            submit_type="donate",
+            success_url=url_for("payment.success", _external=True, _scheme="https"),
+            cancel_url=url_for("payment.cancel", _external=True, _scheme="https"),
+            # Has to exist because we are requiring login
+            client_reference_id=(
+                current_user.get_id()  # pyright: ignore[reportGeneralTypeIssues]
+            ),
+        )
+    except Exception as e:  # noqa: BLE001 # pylint: disable=broad-except
+        return str(e)
 
+    if not checkout_session.url:
+        return "Error creating checkout session"
     return redirect(checkout_session.url, code=303)
 
 
@@ -67,7 +74,7 @@ def webhook() -> Response:
     event = None
     payload = request.data
     sig_header = request.headers["STRIPE_SIGNATURE"]
-    event = stripe.Webhook.construct_event(
+    event = stripe.Webhook.construct_event(  # pyright: ignore[reportPrivateImportUsage]
         payload, sig_header, current_app.config["STRIPE_WH_SECRET"]
     )
 
@@ -78,5 +85,5 @@ def webhook() -> Response:
             session["client_reference_id"], session["amount_total"]
         )
         return Response(response, 200 if status else 500)
-    print(f"Unhandled event type {event['type']}", flush=True)
+    current_app.logger.error("Unhandled event type %s", event["type"])
     return jsonify(success=True)
