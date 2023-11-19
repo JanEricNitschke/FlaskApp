@@ -38,9 +38,7 @@ def checkout() -> Union[Response, str]:
             success_url=url_for("payment.success", _external=True, _scheme="https"),
             cancel_url=url_for("payment.cancel", _external=True, _scheme="https"),
             # Has to exist because we are requiring login
-            client_reference_id=(
-                current_user.get_id()  # pyright: ignore[reportGeneralTypeIssues]
-            ),
+            client_reference_id=(current_user.get_id()),
         )
     except Exception as e:  # noqa: BLE001 # pylint: disable=broad-except
         return str(e)
