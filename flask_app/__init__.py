@@ -3,7 +3,7 @@
 import contextlib
 import os
 from collections.abc import Mapping
-from typing import Any, Optional, Union
+from typing import Any
 
 import stripe
 from flask import Flask
