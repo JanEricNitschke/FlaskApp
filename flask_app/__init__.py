@@ -2,7 +2,8 @@
 
 import contextlib
 import os
-from typing import Any, Mapping, Optional, Union
+from collections.abc import Mapping
+from typing import Any, Optional, Union
 
 import stripe
 from flask import Flask
@@ -16,12 +17,12 @@ login_manager = LoginManager()
 
 
 @login_manager.user_loader
-def load_user(user_id: str) -> Optional[User]:
+def load_user(user_id: str) -> User | None:
     """Defines user_loader."""
     return User.get(user_id)
 
 
-def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Flask:
+def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
     """Create and configure the application.
 
     Returns:

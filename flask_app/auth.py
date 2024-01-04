@@ -2,7 +2,7 @@
 import json
 
 # Third-party libraries
-from typing import Any, Union
+from typing import Any
 
 import requests
 from flask import (
@@ -86,11 +86,11 @@ def callback() -> Response:
 
 
 @bp.route("/registration", methods=("GET", "POST"))
-def registration() -> Union[Response, str]:
+def registration() -> Response | str:
     """Registration logic.
 
     Returns:
-        Union[Response, str]: Registration template if the request method is GET,
+        Response | str: Registration template if the request method is GET,
             otherwise redirects to the index page after login.
     """
     if request.method != "POST":
@@ -146,7 +146,7 @@ def cancel() -> str:
 
 
 @bp.route("/login", methods=("GET", "POST"))
-def login() -> Union[Response, str]:
+def login() -> Response | str:
     """Login logic."""
     if request.method == "POST":
         # Find out what URL to hit for Google login

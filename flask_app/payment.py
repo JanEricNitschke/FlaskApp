@@ -1,5 +1,4 @@
 """Handles payments."""
-from typing import Union
 
 import stripe
 from flask import (
@@ -21,7 +20,7 @@ bp = Blueprint("payment", __name__, url_prefix="/payment")
 
 @bp.route("/checkout", methods=["POST"])
 @login_required
-def checkout() -> Union[Response, str]:
+def checkout() -> Response | str:
     """Checkout."""
     try:
         checkout_session = stripe.checkout.Session.create(
@@ -72,7 +71,7 @@ def webhook() -> Response:
     event = None
     payload = request.data
     sig_header = request.headers["STRIPE_SIGNATURE"]
-    event = stripe.Webhook.construct_event(  # pyright: ignore[reportPrivateImportUsage]
+    event = stripe.Webhook.construct_event(
         payload, sig_header, current_app.config["STRIPE_WH_SECRET"]
     )
 

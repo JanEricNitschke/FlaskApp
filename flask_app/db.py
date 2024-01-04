@@ -1,5 +1,4 @@
 """Grabs and unsets the dynamo db."""
-from typing import Optional
 
 import boto3
 import click
@@ -45,7 +44,7 @@ def get_db() -> Table:
     return g.db
 
 
-def close_db(_e: Optional[BaseException] = None) -> None:
+def close_db(_e: BaseException | None = None) -> None:
     """Unset the db."""
     _ = g.pop("db", None)
 
