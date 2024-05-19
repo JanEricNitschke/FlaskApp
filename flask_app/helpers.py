@@ -1,4 +1,5 @@
 """Module with helper functions."""
+
 from botocore.exceptions import ClientError
 
 
@@ -10,6 +11,9 @@ def check_error_code(error: ClientError, expected_code: str) -> bool:
         expected_code (str): The expected error code.
     """
     try:
-        return error.response["Error"]["Code"] == expected_code
+        return (
+            error.response["Error"]["Code"]  # type: ignore [reportTypedDictNotRequiredAccess]
+            == expected_code
+        )
     except KeyError:
         return False

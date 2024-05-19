@@ -1,6 +1,5 @@
 """Tests the database part of the app."""
 
-
 import pytest
 from flask import Flask
 from flask.testing import FlaskCliRunner

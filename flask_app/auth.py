@@ -1,4 +1,5 @@
 """Defines the authorization functionality."""
+
 import json
 
 # Third-party libraries
@@ -46,8 +47,10 @@ def callback() -> Response:
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
     request.url = request.url.replace(
-        "http://", "https://", 1
-    )  # pyright: ignore [reportGeneralTypeIssues]
+        "http://",
+        "https://",
+        1,  # pyright: ignore [reportAttributeAccessIssue]
+    )
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
@@ -74,7 +77,7 @@ def callback() -> Response:
         unique_id = userinfo_json.get("sub")
     else:
         abort(400, "User email not available or not verified by Google.")
-    if user := User.get(unique_id):
+    if user := User.get(unique_id):  # pylint: disable=E0606
         # Begin user session by logging the user in
         login_user(user)
         # Send user back to homepage
@@ -93,6 +96,7 @@ def registration() -> Response | str:
         Response | str: Registration template if the request method is GET,
             otherwise redirects to the index page after login.
     """
+    # pylint: disable=E0606
     if request.method != "POST":
         return render_template("auth/registration.html")
     # Find out what URL to hit for Google login

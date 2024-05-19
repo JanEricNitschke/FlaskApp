@@ -38,7 +38,7 @@ class User(UserMixin, BaseModel):
         if "Item" not in response:
             return None
         item = response["Item"]
-        return User(**item)  # pyright: ignore [reportGeneralTypeIssues]
+        return User(**item)  # pyright: ignore [reportArgumentType]
 
     @staticmethod
     def create(

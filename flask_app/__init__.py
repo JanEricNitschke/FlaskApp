@@ -30,7 +30,8 @@ def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
     """
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY="dev", DATABASE="flaskapp_userdata"  # noqa: S106
+        SECRET_KEY="dev",  # noqa: S106
+        DATABASE="flaskapp_userdata",
     )
     os.environ["WSGI.URL_SCHEME"] = "https"
     if test_config is None:
@@ -54,7 +55,7 @@ def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
     db.init_app(app)
 
     app.register_blueprint(auth.bp)
-    login_manager.login_view = "auth.login"  # pyright: ignore [reportGeneralTypeIssues]
+    login_manager.login_view = "auth.login"  # pyright: ignore [reportAttributeAccessIssue]
 
     app.register_blueprint(homepage.bp)
     app.add_url_rule("/", endpoint="index")
