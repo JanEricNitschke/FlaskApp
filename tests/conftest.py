@@ -1,6 +1,5 @@
 """Sets up testing environment."""
 
-
 import contextlib
 
 # pylint: disable=redefined-outer-name

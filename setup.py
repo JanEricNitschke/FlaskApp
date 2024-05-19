@@ -1,4 +1,5 @@
 """Set up script for flaskapp."""
+
 from setuptools import find_packages, setup
 
 setup(

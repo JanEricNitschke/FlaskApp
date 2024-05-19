@@ -7,9 +7,15 @@ force-meta-min-func-length = 5
 check                      = true
 
 [tool.ruff]
+# Assume Python 3.11.
+target-version = "py311"
+# Same as Black.
+line-length = 88
+
+[tool.ruff.lint]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
 select = ["ALL"]
-ignore = ["ANN101", "ANN401", "TRY003", "TRY300", "COM", "FA100", "PTH"]
+ignore = ["ANN101", "ANN401", "TRY003", "TRY300", "COM", "FA100", "PTH", "ISC001"]
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -36,29 +42,25 @@ exclude = [
     "docs",
 ]
 
-# Same as Black.
-line-length = 88
 
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-# Assume Python 3.11.
-target-version = "py311"
 
 [tool.black]
 line-length    = 88
 target-version = ['py311']
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py"       = ["E402", "F401"]
 "tests/test_*.py"   = ["ANN201", "S101", "SLF001", "PLR2004"]
 "setup.py"          = ["D100"]
 "flask_app/user.py" = ["UP007"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google" # Accepts: "google", "numpy", or "pep257".
 
-[tool.ruff.pylint]
+[tool.ruff.lint.pylint]
 max-args = 15
 
 [tool.pyright]
