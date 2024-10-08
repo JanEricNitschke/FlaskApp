@@ -62,13 +62,13 @@ def app() -> Iterator[Flask]:
         table.delete_item(Key={"userid": "2"})
 
 
-@pytest.fixture()
+@pytest.fixture
 def client(app: Flask) -> FlaskClient:
     """Fixture to be able to issue client commands."""
     return app.test_client()
 
 
-@pytest.fixture()
+@pytest.fixture
 def runner(app: Flask) -> FlaskCliRunner:
     """Fixture to be able to issue cli runner commands."""
     return app.test_cli_runner()
