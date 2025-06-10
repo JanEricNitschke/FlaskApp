@@ -6,6 +6,6 @@ Flask==3.1.1
 Flask-Login==0.6.3
 oauthlib==3.2.2
 pydantic==2.11.5
-requests==2.32.3
+requests==2.32.4
 stripe==7.10.0
 Werkzeug==3.1.3
