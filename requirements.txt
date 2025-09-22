@@ -1,6 +1,6 @@
-boto3==1.40.30
-boto3-stubs==1.40.30
-botocore==1.40.30
+boto3==1.40.35
+boto3-stubs==1.40.35
+botocore==1.40.35
 click==8.1.8
 Flask==3.1.2
 Flask-Login==0.6.3
