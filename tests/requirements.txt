@@ -1,6 +1,6 @@
-boto3-stubs[essential]==1.43.14
+boto3-stubs[essential]==1.43.19
 pre-commit==4.6.0
 pylint==4.0.5
-pyright==1.1.409
+pyright==1.1.410
 pytest==9.0.3
 pytest-cov==7.1.0
